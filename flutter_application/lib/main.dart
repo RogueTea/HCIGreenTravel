@@ -77,12 +77,16 @@ class HomePage extends StatelessWidget {
              Container(
               width: tab_width,
               color: Color(0xffCBCBCB),
-              child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {},),
+              child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {
+                Navigator.pushNamed(context, '/scoreboard');
+              },),
             ), 
              Container(
               width: tab_width,
               color: Color(0xffCBCBCB),
-              child:  IconButton(icon: Icon(Icons.school), onPressed: () {},),
+              child:  IconButton(icon: Icon(Icons.school), onPressed: () {
+                Navigator.pushNamed(context, '/learn');
+              },),
             ), 
           ],
         ),
@@ -243,7 +247,9 @@ class ScoreboardPage extends StatelessWidget {
             Container(
               width: tab_width,
               color: Color(0xffCBCBCB),
-              child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {},),
+              child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {
+                Navigator.pushNamed(context, '/home');
+              },),
             ), 
              Container(
               width: tab_width,
@@ -253,7 +259,9 @@ class ScoreboardPage extends StatelessWidget {
              Container(
               width: tab_width,
               color: Color(0xffCBCBCB),
-              child:  IconButton(icon: Icon(Icons.school), onPressed: () {},),
+              child:  IconButton(icon: Icon(Icons.school), onPressed: () {
+                Navigator.pushNamed(context, '/learn');
+              },),
             ), 
           ],
         ),
@@ -287,12 +295,16 @@ class LearnPage extends StatelessWidget {
             Container(
               width: tab_width,
               color: Color(0xffCBCBCB),
-              child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {},),
+              child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {
+                Navigator.pushNamed(context, '/home');
+              },),
             ), 
              Container(
               width: tab_width,
               color: Color(0xffCBCBCB),
-              child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {},),
+              child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {
+                Navigator.pushNamed(context, '/scoreboard');
+              },),
             ), 
              Container(
               width: tab_width,
@@ -306,4 +318,5 @@ class LearnPage extends StatelessWidget {
         );
   }
 }
+
 
