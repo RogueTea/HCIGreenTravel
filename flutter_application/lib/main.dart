@@ -26,11 +26,8 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Login"),
-          backgroundColor: Colors.blue,
-        ),
-        body: Center(
+      backgroundColor: Color(0xffDDDFDE),
+      body: Center(
             child: Column(
           children: <Widget>[
             ElevatedButton(
@@ -64,11 +61,33 @@ class RegisterPage extends StatelessWidget {
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double tab_width = MediaQuery.of(context).size.width/3;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Home"),
-          backgroundColor: Colors.blue,
+        backgroundColor: Color(0xffDDDFDE),
+        bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Container(
+              width: tab_width,
+              color: Color(0xffDDDFDE),
+              child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {},),
+            ), 
+             Container(
+              width: tab_width,
+              color: Color(0xffCBCBCB),
+              child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {},),
+            ), 
+             Container(
+              width: tab_width,
+              color: Color(0xffCBCBCB),
+              child:  IconButton(icon: Icon(Icons.school), onPressed: () {},),
+            ), 
+          ],
         ),
+        color: Color(0xffCBCBCB),
+      ),
         body: Center(
             child: Column(
           children: <Widget>[
@@ -209,11 +228,37 @@ class EditJourneyPage extends StatelessWidget {
 class ScoreboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double tab_width = MediaQuery.of(context).size.width/3;
     return Scaffold(
         appBar: AppBar(
-      title: Text("Scoreboard"),
-      backgroundColor: Colors.blue,
-    ));
+         title: Text("Scoreboard"),
+          backgroundColor: Colors.blue,
+        ),
+        backgroundColor: Color(0xffDDDFDE),
+        bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Container(
+              width: tab_width,
+              color: Color(0xffCBCBCB),
+              child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {},),
+            ), 
+             Container(
+              width: tab_width,
+              color: Color(0xffCDDDFDE),
+              child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {},),
+            ), 
+             Container(
+              width: tab_width,
+              color: Color(0xffCBCBCB),
+              child:  IconButton(icon: Icon(Icons.school), onPressed: () {},),
+            ), 
+          ],
+        ),
+        color: Color(0xffCBCBCB),
+      ),);
   }
 }
 
@@ -231,10 +276,34 @@ class WeeklyReportPage extends StatelessWidget {
 class LearnPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double tab_width = MediaQuery.of(context).size.width/3;
     return Scaffold(
-        appBar: AppBar(
-      title: Text("Learn"),
-      backgroundColor: Colors.blue,
-    ));
+       backgroundColor: Color(0xffDDDFDE),
+        bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Container(
+              width: tab_width,
+              color: Color(0xffCBCBCB),
+              child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {},),
+            ), 
+             Container(
+              width: tab_width,
+              color: Color(0xffCBCBCB),
+              child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {},),
+            ), 
+             Container(
+              width: tab_width,
+              color: Color(0xffDDDFDE),
+              child:  IconButton(icon: Icon(Icons.school), onPressed: () {},),
+            ), 
+          ],
+        ),
+        color: Color(0xffCBCBCB),
+      ),
+        );
   }
 }
+
