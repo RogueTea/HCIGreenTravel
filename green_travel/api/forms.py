@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class JourneyForm (forms.ModelForm):
     distance = forms.IntegerField(initial=0)
-    transport = forms.ModelChoiceField(queryset=Defaults.objects.all(), label= "Transport", required=False)
+    transport = forms.ModelChoiceField(queryset=Default.objects.all(), label= "Transport")
 
     class Meta:
         model = Journey
