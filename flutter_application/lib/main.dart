@@ -239,76 +239,249 @@ class RegisterSuccessPage extends StatelessWidget {
   }
 }
 
+// Class for top oval shape
+class CurvePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint.color = Color(0XFFA4BF5E);
+    paint.style = PaintingStyle.fill; 
+    var path = Path();
+    path.moveTo(0, size.height * 0.7);
+    path.quadraticBezierTo(
+        size.width / 2, size.height, size.width, size.height * 0.7);
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+    canvas.drawPath(path, paint);
+  }
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class JourneyDisplay extends StatelessWidget {
+  final String _date;
+  final String _time;
+  final String _distance;
+  final String _transport;
+  JourneyDisplay(this._date, this._time, this._distance, this._transport);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, 5, 0, 2),
+      padding:EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      decoration: BoxDecoration(
+                    color: Color(0xffD5D6D6),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(children: [
+            Text(_date,
+              style: new TextStyle(
+                fontSize: 14,
+                color: Color(0xff232122),
+                //fontWeight: FontWeight.bold,
+              )),
+            Text(_time,
+              style: new TextStyle(
+                fontSize: 14,
+                color: Color(0xff232122),
+                //fontWeight: FontWeight.bold,
+              )),
+          ],),
+          Column(children: [
+            Text(_distance,
+              style: new TextStyle(
+                fontSize: 14,
+                color: Color(0xff232122),
+                fontWeight: FontWeight.bold,
+              )),
+            Text(_transport,
+              style: new TextStyle(
+                fontSize: 14,
+                color: Color(0xff232122),
+                fontWeight: FontWeight.bold,
+              )),
+          ],),
+          ElevatedButton(
+              child: Text("Edit", style: TextStyle(
+                fontSize: 16, 
+                color: Color(0xff232122),
+                fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                padding:EdgeInsets.fromLTRB(10, 10, 10, 10),
+                primary: Color(0xff7DA4A8),
+                shadowColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),)),
+              onPressed: () {
+                Navigator.pushNamed(context, '/edit-journey');
+              },
+            )
+        ]));
+  }
+}
+
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double tab_width = MediaQuery.of(context).size.width/3;
+    double width = MediaQuery.of(context).size.width;
+    double tab_width = width/3;
     return Scaffold(
         backgroundColor: Color(0xffDDDFDE),
         bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Container(
-              width: tab_width,
-              color: Color(0xffDDDFDE),
-              child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {},),
-            ), 
-             Container(
-              width: tab_width,
-              color: Color(0xffCBCBCB),
-              child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {
-                Navigator.pushNamed(context, '/scoreboard');
-              },),
-            ), 
-             Container(
-              width: tab_width,
-              color: Color(0xffCBCBCB),
-              child:  IconButton(icon: Icon(Icons.school), onPressed: () {
-                Navigator.pushNamed(context, '/learn');
-              },),
-            ), 
-          ],
+          color: Color(0xffCBCBCB),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                width: tab_width,
+                color: Color(0xffDDDFDE),
+                child: IconButton(icon: Icon(Icons.account_circle), onPressed: () {},),
+              ), 
+              Container(
+                width: tab_width,
+                color: Color(0xffCBCBCB),
+                child: IconButton(icon: Icon(Icons.emoji_events), onPressed: () {
+                  Navigator.pushNamed(context, '/scoreboard');
+                },),
+              ), 
+              Container(
+                width: tab_width,
+                color: Color(0xffCBCBCB),
+                child:  IconButton(icon: Icon(Icons.school), onPressed: () {
+                  Navigator.pushNamed(context, '/learn');
+                },),
+              ), 
+            ],
+          ),
         ),
-        color: Color(0xffCBCBCB),
-      ),
-        body: Center(
-            child: Column(
-          children: <Widget>[
-            ElevatedButton(
-              child: Text("New Journey"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/new-journey');
-              },
+        body: Stack(
+          children:[
+            Container(
+              color: Colors.transparent,
+              height: 355,
+              width: width,
+              child: CustomPaint(
+                painter: CurvePainter(),
+              ),
             ),
-            ElevatedButton(
-              child: Text("Edit Journey"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/edit-journey');
-              },
-            ),
-            ElevatedButton(
-              child: Text("Scoreboard"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/scoreboard');
-              },
-            ),
-            ElevatedButton(
-              child: Text("Weekly Report"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/weekly-report');
-              },
-            ),
-            ElevatedButton(
-              child: Text("Learn"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/learn');
-              },
-            )
+            Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.fromLTRB(50, 65, 50, 0),
+                  alignment: Alignment.center,
+                  child: Text("Hello, username", 
+                    style: TextStyle(
+                      fontSize: 36, 
+                      color: Color(0xff232122),
+                      fontWeight: FontWeight.bold))
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(50, 5, 50, 0),
+                  alignment: Alignment.bottomRight,
+                  child:TextButton(
+                    child: Text("Edit profile ->",
+                      style: TextStyle(
+                        color: Color(0xff232122),
+                        fontSize: 14, 
+                        fontWeight: FontWeight.bold,)),
+                    onPressed: (){},)),
+                Container(
+                  margin: EdgeInsets.fromLTRB(30, 5, 30, 20),
+                  padding: EdgeInsets.fromLTRB(15, 20, 15, 10),
+                  height: 230,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Color(0xffEDEDED),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: SingleChildScrollView(
+                        child: Column(children: [
+                          Container(
+                            padding:EdgeInsets.fromLTRB(0, 5, 0, 15),
+                            alignment: Alignment.topLeft,
+                            child:Text("    Journeys", 
+                              style: TextStyle(
+                              color: Color(0xff232122),
+                              fontSize: 20, 
+                              fontWeight: FontWeight.bold,),
+                            textAlign: TextAlign.left,)),
+                          JourneyDisplay("test","test","test","test"),
+                          JourneyDisplay("test","test","test","test"),
+                          JourneyDisplay("test","test","test","test"),
+                          JourneyDisplay("test","test","test","test"),
+                        ],),),),
+                Container(
+                  margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  padding: EdgeInsets.fromLTRB(10.0, 0, 10, 0),
+                  height: 60,
+                  alignment: Alignment.centerRight,
+                  decoration: BoxDecoration(
+                    color: Color(0xffEDEDED),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: TextButton(
+                    child: Text("Your weekly report ->  ",
+                      style: TextStyle(
+                        color: Color(0xff232122),
+                        fontSize: 20, 
+                        fontWeight: FontWeight.bold,)),
+                    onPressed: (){
+                      Navigator.pushNamed(context, '/weekly-report');
+                    },)),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(30, 20, 10, 0),
+                        padding: EdgeInsets.fromLTRB(10.0, 10, 10, 10),
+                        height: 110,
+                        decoration: BoxDecoration(
+                          color: Color(0xffEDEDED),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child:Column(children: [
+                          Text("Total CO2 emittion",
+                            style: TextStyle(
+                              color: Color(0xff232122),
+                              fontSize: 14, 
+                              fontWeight: FontWeight.bold,)),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child:Text("2800g",
+                            style: TextStyle(
+                              color: Color(0xff232122),
+                              fontSize: 36, 
+                              fontWeight: FontWeight.bold,))),
+                        ],)),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(10, 20, 30, 0),
+                        //padding: EdgeInsets.fromLTRB(10.0, 0, 10, 0),
+                        height: 110,
+                        decoration: BoxDecoration(
+                          color: Color(0xffEDEDED),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Text("graph")
+                      )
+                    ],)
           ],
-        )));
+        )
+            ],),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+             Navigator.pushNamed(context, '/new-journey');
+          },
+          child: const Icon(Icons.add, color: Color(0xff232122), size: 36),
+          backgroundColor: Color(0xffEDEDED),
+      ),);
   }
 }
 
