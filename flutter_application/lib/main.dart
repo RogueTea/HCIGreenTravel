@@ -80,7 +80,7 @@ class LoginPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   child:TextButton(
-                    child: Text("Log In",
+                    child: Text("Login",
                       style: TextStyle(
                         color: Color(0xff232122),
                         fontSize: 20, 
@@ -123,7 +123,7 @@ class LoginPage extends StatelessWidget {
             Container(
              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
             child:ElevatedButton(
-              child: Text("Log In", style: TextStyle(
+              child: Text("Login", style: TextStyle(
                 fontSize: 16, 
                 color: Color(0xff232122),
                 fontWeight: FontWeight.bold)),
@@ -234,7 +234,38 @@ class RegisterSuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("SUCCESS"),)
+      backgroundColor:Color(0xffDDDFDE),
+      body: Container(
+              margin: EdgeInsets.fromLTRB(50, 200, 50, 300),
+              padding: EdgeInsets.fromLTRB(10.0, 30, 10, 30),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: Color(0xffCBCBCB),
+                  borderRadius: BorderRadius.circular(15),
+              ),
+              child:Column(children: [
+                Text("You're now registered!",
+                  style: TextStyle(
+                        color: Color(0xff232122),
+                        fontSize: 24, 
+                        fontWeight: FontWeight.bold,)),
+                SizedBox(height:40),
+                ElevatedButton(
+              child: Text("Login", style: TextStyle(
+                fontSize: 16, 
+                color: Color(0xff232122),
+                fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                padding:EdgeInsets.fromLTRB(30, 10, 30, 10),
+                primary: Color(0xff7DA4A8),
+                shadowColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),)),
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+            )
+              ],) )
     );
   }
 }
