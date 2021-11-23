@@ -243,7 +243,7 @@ class RegisterSuccessPage extends StatelessWidget {
     return Scaffold(
         backgroundColor: Color(0xffDDDFDE),
         body: Container(
-            margin: EdgeInsets.fromLTRB(50, 200, 50, 613),
+            margin: EdgeInsets.fromLTRB(50, 200, 50, 300),
             padding: EdgeInsets.fromLTRB(10.0, 30, 10, 30),
             alignment: Alignment.center,
             decoration: BoxDecoration(
@@ -260,7 +260,7 @@ class RegisterSuccessPage extends StatelessWidget {
                     )),
                 SizedBox(height: 40),
                 ElevatedButton(
-                  child: Text("Return to Login",
+                  child: Text("Login",
                       style: TextStyle(
                           fontSize: 16,
                           color: Color(0xff232122),
@@ -557,25 +557,175 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class NewJourneyPage extends StatelessWidget {
+class NewJourneyPage extends StatefulWidget {
+  const NewJourneyPage({Key? key}) : super(key: key);
+
+  @override
+  State<NewJourneyPage> createState() => _NewJourneyPageState();
+}
+
+class _NewJourneyPageState extends State<NewJourneyPage> {
+  String savedJourney = '';
+  String transport = 'Walk';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add New Journey"),
-          backgroundColor: Colors.blue,
-        ),
-        body: Center(
-            child: Column(
-          children: <Widget>[
-            ElevatedButton(
-              child: Text("Save Journey"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/new-journey/save');
-              },
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color(0xff232122),
+              size: 40,
             ),
-          ],
-        )));
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          backgroundColor: Color(0xffDDDFDE),
+          elevation: 0.0,
+        ),
+        backgroundColor: Color(0xffDDDFDE),
+        body: SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.fromLTRB(30, 0, 30, 20),
+                padding: EdgeInsets.fromLTRB(30, 20, 30, 40),
+                //height: 500,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xffCBCBCB),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.fromLTRB(0, 20, 0, 30),
+                        child: const Text("Add New Journey",
+                            style: TextStyle(
+                              color: Color(0xff232122),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ))),
+                    Text("Please enter distance travelled (Km）",
+                        style:
+                            TextStyle(color: Color(0xff232122), fontSize: 16)),
+                    Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                          color: Color(0xffE5E5E5),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: TextField(
+                            decoration:
+                                InputDecoration(border: InputBorder.none))),
+                    Container(
+                        //margin: EdgeInsets.all(10),
+                        width: 40.0,
+                        height: 40.0,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Color(0xffC4C4C4),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text('or',
+                            style: TextStyle(
+                                color: Color(0xff232122), fontSize: 16))),
+                    Text("Choose a previously saved journey",
+                        style:
+                            TextStyle(color: Color(0xff232122), fontSize: 16)),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Color(0xffE5E5E5),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: DropdownButton<String>(
+                        value: savedJourney,
+                        underline: Container(),
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        //elevation: 16,
+                        style: const TextStyle(color: Color(0xff232122)),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            savedJourney = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          '',
+                          'work',
+                          'home',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Text("Please select transport",
+                        style:
+                            TextStyle(color: Color(0xff232122), fontSize: 16)),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Color(0xffE5E5E5),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: DropdownButton<String>(
+                        value: transport,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        underline: Container(),
+                        style: const TextStyle(color: Color(0xff232122)),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            transport = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          'Walk',
+                          'Cycle',
+                          'Car',
+                          'Bus',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: 70),
+                        child: ElevatedButton(
+                          child: Text("Save Journey",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff232122),
+                                  fontWeight: FontWeight.bold)),
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              primary: Color(0xff7DA4A8),
+                              shadowColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              )),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, '/new-journey/confirm');
+                          },
+                        ))
+                  ],
+                ))));
   }
 }
 
@@ -584,20 +734,82 @@ class NewJourneyConfirmPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Save Journey"),
-          backgroundColor: Colors.blue,
-        ),
-        body: Center(
-            child: Column(
-          children: <Widget>[
-            ElevatedButton(
-              child: Text("Save Journey"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/new-journey/confirm');
-              },
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color(0xff232122),
+              size: 40,
             ),
-          ],
-        )));
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          backgroundColor: Color(0xffDDDFDE),
+          elevation: 0.0,
+        ),
+        backgroundColor: Color(0xffDDDFDE),
+        body: Center(
+            child: Container(
+                margin: EdgeInsets.fromLTRB(50, 100, 50, 300),
+                padding: EdgeInsets.fromLTRB(10.0, 30, 10, 30),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xffCBCBCB),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Save this journey?",
+                        style: TextStyle(
+                          color: Color(0xff232122),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    SizedBox(height: 40),
+                    Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              child: Text("Yes",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xff232122),
+                                      fontWeight: FontWeight.bold)),
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                  primary: Color(0xff7DA4A8),
+                                  shadowColor: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  )),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, '/new-journey/save');
+                              },
+                            ),
+                            ElevatedButton(
+                              child: Text("No",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xff232122),
+                                      fontWeight: FontWeight.bold)),
+                              style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                  primary: Color(0xff7DA4A8),
+                                  shadowColor: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  )),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, '/new-journey/score');
+                              },
+                            )
+                          ],
+                        ))
+                  ],
+                ))));
   }
 }
 
@@ -606,20 +818,65 @@ class NewJourneySavePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Name Journey"),
-          backgroundColor: Colors.blue,
-        ),
-        body: Center(
-            child: Column(
-          children: <Widget>[
-            ElevatedButton(
-              child: Text("Journey Score"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/new-journey/score');
-              },
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color(0xff232122),
+              size: 40,
             ),
-          ],
-        )));
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          backgroundColor: Color(0xffDDDFDE),
+          elevation: 0.0,
+        ),
+        backgroundColor: Color(0xffDDDFDE),
+        body: SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.fromLTRB(50, 100, 50, 300),
+                padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xffCBCBCB),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("Save as",
+                          style: TextStyle(
+                            color: Color(0xff232122),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: Color(0xffE5E5E5),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: TextField(
+                              decoration:
+                                  InputDecoration(border: InputBorder.none))),
+                      SizedBox(height: 40),
+                      ElevatedButton(
+                        child: Text("Confirm",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff232122),
+                                fontWeight: FontWeight.bold)),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                            primary: Color(0xff7DA4A8),
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/new-journey/score');
+                        },
+                      ),
+                    ]))));
   }
 }
 
@@ -627,21 +884,60 @@ class NewJourneyScoredPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Journey Scored"),
-          backgroundColor: Colors.blue,
-        ),
+        backgroundColor: Color(0xffDDDFDE),
         body: Center(
-            child: Column(
-          children: <Widget>[
-            ElevatedButton(
-              child: Text("Home"),
-              onPressed: () {
-                Navigator.pushNamed(context, '/home');
-              },
-            ),
-          ],
-        )));
+            child: Container(
+                margin: EdgeInsets.fromLTRB(50, 100, 50, 180),
+                padding: EdgeInsets.fromLTRB(10.0, 30, 10, 30),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xffA4BF5E),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(height: 20),
+                    Container(
+                      child: Image.asset('assets/earth1.png'),
+                      height: 150,
+                    ),
+                    SizedBox(height: 20),
+                    Text("You've scored",
+                        style: TextStyle(
+                          color: Color(0xff232122),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Text("14 points!",
+                        style: TextStyle(
+                          color: Color(0xff232122),
+                          fontSize: 34,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    SizedBox(height: 40),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: ElevatedButton(
+                        child: Text("Confirm",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff232122),
+                                fontWeight: FontWeight.bold)),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                            primary: Color(0xffB4D069),
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/home');
+                        },
+                      ),
+                    )
+                  ],
+                ))));
   }
 }
 
@@ -661,9 +957,12 @@ class ScoreboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double tab_width = MediaQuery.of(context).size.width / 3;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Scoreboard"),
-        backgroundColor: Colors.blue,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/new-journey');
+        },
+        child: const Icon(Icons.add, color: Color(0xff232122), size: 36),
+        backgroundColor: Color(0xffEDEDED),
       ),
       backgroundColor: Color(0xffDDDFDE),
       bottomNavigationBar: BottomAppBar(
@@ -723,44 +1022,97 @@ class LearnPage extends StatelessWidget {
   Widget build(BuildContext context) {
     double tab_width = MediaQuery.of(context).size.width / 3;
     return Scaffold(
-      backgroundColor: Color(0xffDDDFDE),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Container(
-              width: tab_width,
-              color: Color(0xffCBCBCB),
-              child: IconButton(
-                icon: Icon(Icons.account_circle),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/home');
-                },
-              ),
-            ),
-            Container(
-              width: tab_width,
-              color: Color(0xffCBCBCB),
-              child: IconButton(
-                icon: Icon(Icons.emoji_events),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/scoreboard');
-                },
-              ),
-            ),
-            Container(
-              width: tab_width,
-              color: Color(0xffDDDFDE),
-              child: IconButton(
-                icon: Icon(Icons.school),
-                onPressed: () {},
-              ),
-            ),
-          ],
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/new-journey');
+          },
+          child: const Icon(Icons.add, color: Color(0xff232122), size: 36),
+          backgroundColor: Color(0xffEDEDED),
         ),
-        color: Color(0xffCBCBCB),
-      ),
-    );
+        backgroundColor: Color(0xffDDDFDE),
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                width: tab_width,
+                color: Color(0xffCBCBCB),
+                child: IconButton(
+                  icon: Icon(Icons.account_circle),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/home');
+                  },
+                ),
+              ),
+              Container(
+                width: tab_width,
+                color: Color(0xffCBCBCB),
+                child: IconButton(
+                  icon: Icon(Icons.emoji_events),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/scoreboard');
+                  },
+                ),
+              ),
+              Container(
+                width: tab_width,
+                color: Color(0xffDDDFDE),
+                child: IconButton(
+                  icon: Icon(Icons.school),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+          color: Color(0xffCBCBCB),
+        ),
+        body: Stack(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              margin: EdgeInsets.fromLTRB(30, 100, 30, 50),
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+              decoration: BoxDecoration(
+                color: Color(0xffEDEDED),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("       Travel distance (Km)",
+                            style: TextStyle(
+                                color: Color(0xff232122), fontSize: 16)),
+                        Container(
+                            margin: EdgeInsets.fromLTRB(20, 10, 80, 10),
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: Color(0xffE5E5E5),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: TextField(
+                                decoration:
+                                    InputDecoration(border: InputBorder.none))),
+                      ],
+                    ),
+                  ),
+                  Text("graph")
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
+              child: Text("CO2 emittions compared",
+                  style: TextStyle(
+                      fontSize: 36,
+                      color: Color(0xff232122),
+                      fontWeight: FontWeight.bold)),
+            )
+          ],
+        ));
   }
 }
