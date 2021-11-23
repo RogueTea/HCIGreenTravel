@@ -1,15 +1,18 @@
 from rest_framework.fields import ChoiceField
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from .models import *
 
-class DefaultSerializer(ModelSerializer):
+class TransportName(PrimaryKeyRelatedField): 
+    def display_value(self, instance):
+        return instance.name
 
-    def calculate(self, validated_data):
-        data = validated_data
-        transport = ChoiceField(choices=Default.objects.all())
-        emissions = Default.objects.get(pk=transport)
-        distance = data['distance']
-        emitted = transport.emissions * distance
+class DefaultSerializer(ModelSerializer):
+    class Meta:
+        model = Default
+        fields = '__all__'
+
+class EmissionSerializer(ModelSerializer):
+    transport = TransportName(queryset=Default.objects.all())
 
     class Meta:
         model = Default
