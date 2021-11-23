@@ -11,7 +11,7 @@ class Default(models.Model):
         return self.transport
 
 class Journey(models.Model):
-    date = models.DateField(auto_now=True, blank=True)
+    date = models.DateTimeField(auto_now=True, blank=True)
     journeyid =  models.AutoField(primary_key=True)
     distance = models.IntegerField(default =0)
     emitted = models.IntegerField(default =0, null=True)

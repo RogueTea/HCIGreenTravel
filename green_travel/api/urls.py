@@ -5,5 +5,5 @@ from .views import *
 app_name='api'
 urlpatterns =[
     path('learn/', co2Learn.as_view(), name='learn'),
-    #path('addJourney/', views.addJourney, name='addJourney'),
+    path('addJourney/', addJourney.as_view(), name='addJourney'),
 ]

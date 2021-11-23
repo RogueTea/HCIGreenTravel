@@ -4,17 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.serializers import *
+from django.http import JsonResponse
 
 # Create your views here.
-
-# @api_view(['POST'])
-# def addJourney (request):
-#     serializer = JourneySerializer (data=request.data)
-#     if serializer.is_valid(raise_exception = ValueError):
-#         serializer.create(validated_data=request.data)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-#     else:
-#         return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)
 
 class co2Learn(APIView):
     # for graph to show average co2 emission of transports
@@ -37,6 +29,29 @@ class co2Learn(APIView):
                 avg.append(emitted)
                 data['serializer'] = serializer.data
                 data['avg'] = avg
+                return Response(data)
+            except:
+                return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)       
+
+class addJourney(APIView):
+    def post(self,request):
+        data = {}
+        serializer = JourneySerializer(data=request.data)
+        if serializer.is_valid(raise_exception = ValueError):
+            print("yeee")
+            try:
+                transport = serializer.data["transport"]
+                Tobject = Default.objects.get(pk=transport)
+                emissions = Tobject.emissions
+                distance = request.data["distance"]
+
+                journey = Journey.objects.create(
+                    transport = Tobject,
+                    distance = distance,
+                    emitted = distance * emissions
+                )
+                data['journey'] = Journey.objects.filter(journeyid=journey.journeyid).values()[0]
+                print(data)
                 return Response(data)
             except:
                 return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)       

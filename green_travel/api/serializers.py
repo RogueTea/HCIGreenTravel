@@ -19,19 +19,7 @@ class EmissionSerializer(ModelSerializer):
         fields = '__all__'
 
 class JourneySerializer(ModelSerializer):
-
-    def create(self,validated_data):
-        data = validated_data
-        transport = Default.objects.get(pk=data['transport'])
-        #emissions = Default.objects.get(pk=transport)
-        distance = data['distance']
-
-        journey = Journey.objects.create(
-            transport = transport,
-            distance = distance,
-            emitted = transport.emissions * distance
-        )  
-        return journey
+    transport = TransportName(queryset=Default.objects.all())
         
     class Meta:
         model = Journey
