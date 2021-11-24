@@ -4,24 +4,22 @@ from django.contrib.auth.models import AbstractUser
 import uuid
 
 # Create your models here.
-
-""" class Defaults(models.Model):
+class Default(models.Model):
     transport = models.CharField(max_length=10, primary_key=True)
     emissions = models.IntegerField(default =0)
 
     def __str__(self):
-        return self.transport """
+        return self.transport 
 
 class Journey(models.Model):
-    date = models.DateField((u"Conversation Date"), blank=True)
-    time = models.TimeField((u"Conversation Time"), blank=True)
-    journeyid =  models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateTimeField(auto_now=True, blank=True)
+    journeyid =  models.AutoField(primary_key=True)
     distance = models.IntegerField(default =0)
-    emitted = models.IntegerField(default =0)
-    #transport = models.ForeignKey(Defaults,n_delete=models.CASCADE, default = "Car")
+    emitted = models.IntegerField(default =0, null=True)
+    transport = models.ForeignKey(Default,on_delete=models.CASCADE, default = "Car")
 
     def __str__(self):
-        return self.journeyid
+        return str(self.journeyid)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
