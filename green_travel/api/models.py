@@ -22,7 +22,7 @@ class Journey(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #journey = models.ForeignKey(Journey, on_delete=models.CASCADE)
+    journey = models.ForeignKey(Journey, default=None, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
