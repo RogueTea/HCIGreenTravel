@@ -952,57 +952,313 @@ class EditJourneyPage extends StatelessWidget {
   }
 }
 
+class ScoreDisplay extends StatelessWidget {
+  final int _rank;
+  final String _username;
+  final int _emittion;
+  final int _maxEmittion;
+  //final Object _controller;
+  ScoreDisplay(this._rank, this._username, this._emittion, this._maxEmittion);
+  @override
+  Widget build(BuildContext context) {
+    double height = 40;
+    return Container(
+        margin: EdgeInsets.symmetric(vertical: 3),
+        width: MediaQuery.of(context).size.width * 0.75,
+        child: Row(
+          children: [
+            Container(
+                height: height,
+                width: MediaQuery.of(context).size.width * 0.1,
+                alignment: Alignment.center,
+                //padding: EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: Color(0xffDDDFDE),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    bottomLeft: Radius.circular(10.0),
+                  ),
+                ),
+                child: Text(_rank.toString(),
+                    style: TextStyle(
+                      color: Color(0xff232122),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ))),
+            Container(
+                height: height,
+                width: MediaQuery.of(context).size.width * 0.65,
+                decoration: BoxDecoration(
+                  color: Color(0xffDDDFDE),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0),
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: height,
+                      width: MediaQuery.of(context).size.width *
+                          (_emittion / _maxEmittion * 0.6),
+                      decoration: BoxDecoration(
+                        color: Color(0xffB0B0B0),
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        alignment: Alignment.centerRight,
+                        child: Text(_emittion.toString() + "g",
+                            style: TextStyle(
+                              color: Color(0xff232122),
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ))),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(_username,
+                          style: TextStyle(
+                            color: Color(0xff232122),
+                            fontSize: 14,
+                          )),
+                    ),
+                  ],
+                ))
+          ],
+        ));
+  }
+}
+
+class UserScoreDisplay extends StatelessWidget {
+  final int _rank;
+  final String _username;
+  final int _emittion;
+  final int _maxEmittion;
+  //final Object _controller;
+  UserScoreDisplay(
+      this._rank, this._username, this._emittion, this._maxEmittion);
+  @override
+  Widget build(BuildContext context) {
+    double height = 40;
+    return Container(
+        width: MediaQuery.of(context).size.width * 0.75,
+        child: Row(
+          children: [
+            Container(
+                height: height,
+                width: MediaQuery.of(context).size.width * 0.1,
+                alignment: Alignment.center,
+                //padding: EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                    color: Color(0xffDDDFDE),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), //color of shadow
+                        spreadRadius: 3, //spread radius
+                        blurRadius: 7, // blur radius
+                        offset: Offset(3, 2), // changes position of shadow
+                      ),
+                    ]),
+                child: Text(_rank.toString(),
+                    style: TextStyle(
+                      color: Color(0xff232122),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ))),
+            Container(
+                height: height,
+                width: MediaQuery.of(context).size.width * 0.65,
+                decoration: BoxDecoration(
+                    color: Color(0xffDDDFDE),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), //color of shadow
+                        spreadRadius: 3, //spread radius
+                        blurRadius: 7, // blur radius
+                        offset: Offset(3, 2), // changes position of shadow
+                        //first paramerter of offset is left-right
+                        //second parameter is top to down
+                      ),
+                    ]),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: height,
+                      width: MediaQuery.of(context).size.width *
+                          (_emittion / _maxEmittion * 0.6),
+                      decoration: BoxDecoration(
+                        color: Color(0xffB0B0B0),
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        alignment: Alignment.centerRight,
+                        child: Text(_emittion.toString() + "g",
+                            style: TextStyle(
+                              color: Color(0xff232122),
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ))),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(_username,
+                          style: TextStyle(
+                            color: Color(0xff232122),
+                            fontSize: 14,
+                          )),
+                    ),
+                  ],
+                ))
+          ],
+        ));
+  }
+}
+
 class ScoreboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double tab_width = MediaQuery.of(context).size.width / 3;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/new-journey');
-        },
-        child: const Icon(Icons.add, color: Color(0xff232122), size: 36),
-        backgroundColor: Color(0xffEDEDED),
-      ),
-      backgroundColor: Color(0xffDDDFDE),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Container(
-              width: tab_width,
-              color: Color(0xffCBCBCB),
-              child: IconButton(
-                icon: Icon(Icons.account_circle),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/home');
-                },
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/new-journey');
+          },
+          child: const Icon(Icons.add, color: Color(0xff232122), size: 36),
+          backgroundColor: Color(0xffEDEDED),
+        ),
+        backgroundColor: Color(0xffDDDFDE),
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                width: tab_width,
+                color: Color(0xffCBCBCB),
+                child: IconButton(
+                  icon: Icon(Icons.account_circle),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/home');
+                  },
+                ),
               ),
+              Container(
+                width: tab_width,
+                color: Color(0xffCDDDFDE),
+                child: IconButton(
+                  icon: Icon(Icons.emoji_events),
+                  onPressed: () {},
+                ),
+              ),
+              Container(
+                width: tab_width,
+                color: Color(0xffCBCBCB),
+                child: IconButton(
+                  icon: Icon(Icons.school),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/learn');
+                  },
+                ),
+              ),
+            ],
+          ),
+          color: Color(0xffCBCBCB),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
+              alignment: Alignment.center,
+              child: Text("Scoreboard",
+                  style: TextStyle(
+                      fontSize: 36,
+                      color: Color(0xff232122),
+                      fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(height: 10),
+            Container(
+              alignment: Alignment.centerRight,
+              width: MediaQuery.of(context).size.width * 0.8,
+              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+              decoration: BoxDecoration(
+                color: Color(0xffA4BF5E),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20.0),
+                  topLeft: Radius.circular(20.0),
+                ),
+              ),
+              child: Text("2/11 ~9/11",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xff232122),
+                      fontWeight: FontWeight.bold)),
             ),
             Container(
-              width: tab_width,
-              color: Color(0xffCDDDFDE),
-              child: IconButton(
-                icon: Icon(Icons.emoji_events),
-                onPressed: () {},
-              ),
-            ),
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width * 0.8,
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                decoration: BoxDecoration(
+                  color: Color(0xffEDEDED),
+                ),
+                child: Column(
+                  children: [
+                    UserScoreDisplay(32, "user1", 2020, 3000),
+                    Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          child: Text("jump to your rank ->     ",
+                              style: TextStyle(
+                                color: Color(0xff232122),
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          onPressed: () {},
+                        ))
+                  ],
+                )),
             Container(
-              width: tab_width,
-              color: Color(0xffCBCBCB),
-              child: IconButton(
-                icon: Icon(Icons.school),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/learn');
-                },
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.4,
+              margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
+              //padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+              decoration: BoxDecoration(
+                color: Color(0xffEDEDED),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(20.0),
+                  bottomLeft: Radius.circular(20.0),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ScoreDisplay(1, "user2", 20, 3000),
+                    ScoreDisplay(2, "user3", 120, 3000),
+                    ScoreDisplay(3, "user4", 220, 3000),
+                    ScoreDisplay(4, "user5", 320, 3000),
+                    ScoreDisplay(5, "user6", 420, 3000),
+                    ScoreDisplay(6, "user7", 520, 3000),
+                    ScoreDisplay(7, "user8", 620, 3000),
+                    ScoreDisplay(8, "user8", 720, 3000),
+                  ],
+                ),
               ),
             ),
           ],
-        ),
-        color: Color(0xffCBCBCB),
-      ),
-    );
+        ));
   }
 }
 
