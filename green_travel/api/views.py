@@ -6,6 +6,28 @@ from rest_framework.response import Response
 from api.serializers import *
 from django.http import JsonResponse
 
+from rest_framework.generics import (ListCreateAPIView,RetrieveUpdateDestroyAPIView,)
+from rest_framework.permissions import IsAuthenticated
+from .models import UserProfile
+from .serializers import UserProfileSerializer
+from .permission import IsOwnerProfileOrReadOnly
+
+class UserProfileListCreateView(ListCreateAPIView):
+    queryset=UserProfile.objects.all()
+    serializer_class=UserProfileSerializer
+    permission_classes=[IsAuthenticated]
+
+    def perform_create(self, serializer):
+        user=self.request.user
+        serializer.save(user=user)
+
+
+class userProfileDetailView(RetrieveUpdateDestroyAPIView):
+    queryset=UserProfile.objects.all()
+    serializer_class=UserProfileSerializer
+    permission_classes=[IsOwnerProfileOrReadOnly,IsAuthenticated]
+
+
 # Create your views here.
 
 class co2Learn(APIView):
