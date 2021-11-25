@@ -9,6 +9,7 @@ void main() {
     routes: {
       '/login': (context) => LoginPage(),
       '/register': (context) => RegisterPage(),
+      '/edit-profile': (context) => EditProfilePage(),
       '/register-success': (context) => RegisterSuccessPage(),
       '/home': (context) => HomePage(),
       '/new-journey': (context) => NewJourneyPage(),
@@ -428,7 +429,8 @@ class HomePage extends StatelessWidget {
               painter: CurvePainter(),
             ),
           ),
-          Column(
+          SingleChildScrollView(
+              child: Column(
             children: <Widget>[
               Container(
                   margin: EdgeInsets.fromLTRB(50, 65, 50, 0),
@@ -448,7 +450,9 @@ class HomePage extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         )),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/edit-profile');
+                    },
                   )),
               Container(
                 margin: EdgeInsets.fromLTRB(30, 5, 30, 20),
@@ -543,7 +547,7 @@ class HomePage extends StatelessWidget {
                 ],
               )
             ],
-          )
+          ))
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -941,14 +945,149 @@ class NewJourneyScoredPage extends StatelessWidget {
   }
 }
 
-class EditJourneyPage extends StatelessWidget {
+class EditJourneyPage extends StatefulWidget {
+  const EditJourneyPage({Key? key}) : super(key: key);
+
+  @override
+  State<EditJourneyPage> createState() => _EditJourneyPageState();
+}
+
+class _EditJourneyPageState extends State<EditJourneyPage> {
+  String transport = 'Walk';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-      title: Text("Edit Journey"),
-      backgroundColor: Colors.blue,
-    ));
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color(0xff232122),
+              size: 40,
+            ),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          backgroundColor: Color(0xffDDDFDE),
+          elevation: 0.0,
+        ),
+        backgroundColor: Color(0xffDDDFDE),
+        body: SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.fromLTRB(50, 80, 50, 200),
+                padding: EdgeInsets.fromLTRB(10.0, 30, 10, 30),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xffCBCBCB),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Edit Journey",
+                            style: TextStyle(
+                              color: Color(0xff232122),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        ElevatedButton(
+                          child: Text("Delete",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff232122),
+                                  fontWeight: FontWeight.bold)),
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              primary: Color(0xff7DA4A8),
+                              shadowColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              )),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/home');
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text("Distance travelled (Km）",
+                        style:
+                            TextStyle(color: Color(0xff232122), fontSize: 16)),
+                    Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                          color: Color(0xffE5E5E5),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: TextField(
+                            decoration:
+                                InputDecoration(border: InputBorder.none))),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text("Transport",
+                        style:
+                            TextStyle(color: Color(0xff232122), fontSize: 16)),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Color(0xffE5E5E5),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: DropdownButton<String>(
+                        value: transport,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 24,
+                        underline: Container(),
+                        style: const TextStyle(color: Color(0xff232122)),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            transport = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          'Walk',
+                          'Cycle',
+                          'Car',
+                          'Bus',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: ElevatedButton(
+                        child: Text("Update",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff232122),
+                                fontWeight: FontWeight.bold)),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            primary: Color(0xff7DA4A8),
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/home');
+                        },
+                      ),
+                    )
+                  ],
+                ))));
   }
 }
 
@@ -1178,8 +1317,8 @@ class ScoreboardPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
-              alignment: Alignment.center,
+              padding: EdgeInsets.fromLTRB(50, 70, 30, 10),
+              alignment: Alignment.centerLeft,
               child: Text("Scoreboard",
                   style: TextStyle(
                       fontSize: 36,
@@ -1266,10 +1405,174 @@ class WeeklyReportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Color(0xff232122),
+            size: 40,
+          ),
+          onPressed: () => Navigator.pop(context, false),
+        ),
+        backgroundColor: Color(0xffA4BF5E),
+        elevation: 0.0,
+      ),
+      backgroundColor: Color(0xffDDDFDE),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Stack(
+            children: [
+              Container(
+                color: Colors.transparent,
+                height: 155,
+                width: MediaQuery.of(context).size.width,
+                child: CustomPaint(
+                  painter: CurvePainter(),
+                ),
+              ),
+              Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      Text("weekly report",
+                          style: TextStyle(
+                              fontSize: 36,
+                              color: Color(0xff232122),
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
+                      Text("2/11~9/11", style: TextStyle(fontSize: 14)),
+                      SizedBox(height: 10),
+                      Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Color(0xffD5D6D6),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text(
+                            "1. Summary of how you did\n2. Comparison with others\n3. How you can get better",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xff5E575A),
+                                fontWeight: FontWeight.bold,
+                                height: 1.5),
+                          )),
+                      SizedBox(height: 20),
+                      Text(
+                        "Summary of how you did",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xff232122),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "Comparison with others",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xff232122),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "How you can get better",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xff232122),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextBoxInput("username"),
+                      TextBoxInput("email"),
+                      TextBoxInput("password"),
+                      TextBoxInput("username"),
+                      TextBoxInput("email"),
+                      TextBoxInput("password"),
+                      TextBoxInput("username"),
+                      TextBoxInput("email"),
+                      TextBoxInput("password"),
+                      TextBoxInput("username"),
+                      TextBoxInput("email"),
+                      TextBoxInput("password"),
+                      TextBoxInput("username"),
+                      TextBoxInput("email"),
+                      TextBoxInput("password"),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EditProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         appBar: AppBar(
-      title: Text("Weekly Report"),
-      backgroundColor: Colors.blue,
-    ));
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Color(0xff232122),
+              size: 40,
+            ),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          backgroundColor: Color(0xffDDDFDE),
+          elevation: 0.0,
+        ),
+        backgroundColor: Color(0xffDDDFDE),
+        body: SingleChildScrollView(
+            child: Container(
+                margin: EdgeInsets.fromLTRB(50, 80, 50, 200),
+                padding: EdgeInsets.fromLTRB(10.0, 30, 10, 30),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xffCBCBCB),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Text("Edit Profile",
+                        style: TextStyle(
+                          color: Color(0xff232122),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextBoxInput("username"),
+                    TextBoxInput("email"),
+                    TextBoxInput("password"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: ElevatedButton(
+                        child: Text("Update",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff232122),
+                                fontWeight: FontWeight.bold)),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                            primary: Color(0xff7DA4A8),
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/home');
+                        },
+                      ),
+                    )
+                  ],
+                ))));
   }
 }
 
@@ -1326,8 +1629,8 @@ class LearnPage extends StatelessWidget {
         body: Stack(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              margin: EdgeInsets.fromLTRB(30, 100, 30, 50),
+              //width: MediaQuery.of(context).size.width * 0.8,
+              margin: EdgeInsets.fromLTRB(35, 150, 35, 50),
               padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
               decoration: BoxDecoration(
                 color: Color(0xffEDEDED),
@@ -1335,33 +1638,55 @@ class LearnPage extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 30),
+                  //SizedBox(height: 30),
                   Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("       Travel distance (Km)",
+                      child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("       Travel distance (Km)",
+                              style: TextStyle(
+                                  color: Color(0xff232122), fontSize: 16)),
+                          Container(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                color: Color(0xffE5E5E5),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: TextField(
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none))),
+                        ],
+                      ),
+                      ElevatedButton(
+                        child: Text("View",
                             style: TextStyle(
-                                color: Color(0xff232122), fontSize: 16)),
-                        Container(
-                            margin: EdgeInsets.fromLTRB(20, 10, 80, 10),
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: Color(0xffE5E5E5),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: TextField(
-                                decoration:
-                                    InputDecoration(border: InputBorder.none))),
-                      ],
-                    ),
+                                fontSize: 16,
+                                color: Color(0xff232122),
+                                fontWeight: FontWeight.bold)),
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            primary: Color(0xff7DA4A8),
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                        onPressed: () {},
+                      ),
+                    ],
+                  )),
+                  SizedBox(
+                    height: 30,
                   ),
                   Text("graph")
                 ],
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
+              padding: EdgeInsets.fromLTRB(35, 50, 30, 50),
               child: Text("CO2 emittions compared",
                   style: TextStyle(
                       fontSize: 36,
