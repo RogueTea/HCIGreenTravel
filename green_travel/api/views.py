@@ -1,10 +1,9 @@
-from rest_framework import serializers, status
+from rest_framework import status
 from api.models import *
-from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.serializers import *
-from django.http import JsonResponse
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -21,22 +20,25 @@ class co2Learn(APIView):
     # user input for interactive learning
     def put(self,request):
         data = {}
-        avg =[]
+        average =[]
         serializer = EmissionSerializer(data=request.data)
         if serializer.is_valid(raise_exception = ValueError):
             try:
-                transport = serializer.data["transport"]
-                emissions = Default.objects.get(pk=transport).emissions
+                inputT = serializer.data["transport"]
+                transports = Default.objects.all()
                 distance = request.data["distance"]
-                emitted = distance * emissions
+                for trans in transports:
+                    avg = {}
+                    emissions = trans.emissions
+                    emitted = distance * emissions
+                    avg["transport"] = trans.transport
+                    avg["emitted"] = emitted
+                    average.append(avg)
+                emissions = Default.objects.get(pk=inputT).emissions
 
                 # user input values
-                avg.append(transport)
-                avg.append(emitted)
-                defaults = Default.objects.all()
-                s = DefaultSerializer (defaults, many=True)
-                data['serializer'] = s.data
-                data['avg'] = avg
+                data["input"] = [inputT, distance]
+                data["average"] = average
                 return Response(data)
             except:
                 return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)       
