@@ -16,13 +16,16 @@ class Journey(models.Model):
     distance = models.IntegerField(default =0)
     emitted = models.IntegerField(default =0, null=True)
     transport = models.ForeignKey(Default,on_delete=models.CASCADE, default = "Car")
+    admin = models.ForeignKey(User,null=True, on_delete=models.CASCADE)
+
+    
 
     def __str__(self):
         return str(self.journeyid)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    journey = models.ForeignKey(Journey, on_delete=models.CASCADE)
+    journey = models.ForeignKey(Journey, default=None, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
