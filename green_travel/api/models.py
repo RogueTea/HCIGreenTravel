@@ -34,3 +34,5 @@ class Scoreboard(models.Model):
     journeyid = models.ForeignKey(Journey, on_delete=models.CASCADE)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.journeyid)

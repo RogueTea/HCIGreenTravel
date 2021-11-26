@@ -36,3 +36,8 @@ class JourneySerializer(ModelSerializer):
     class Meta:
         model = Journey
         fields = ('distance','transport')
+
+class ScoreboardSerializer(ModelSerializer):
+    class Meta:
+        model = Scoreboard
+        fields = '__all__'  	
