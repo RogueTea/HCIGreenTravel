@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     initialRoute: '/login',
     routes: {
       '/login': (context) => LoginPage(),
@@ -433,7 +434,21 @@ class HomePage extends StatelessWidget {
               child: Column(
             children: <Widget>[
               Container(
-                  margin: EdgeInsets.fromLTRB(50, 65, 50, 0),
+                  margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    child: Text("Logout",
+                        style: TextStyle(
+                          color: Color(0xff232122),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                  )),
+              Container(
+                  margin: EdgeInsets.fromLTRB(50, 25, 50, 0),
                   alignment: Alignment.center,
                   child: Text("Hello, username",
                       style: TextStyle(
@@ -444,7 +459,7 @@ class HomePage extends StatelessWidget {
                   margin: EdgeInsets.fromLTRB(50, 5, 50, 0),
                   alignment: Alignment.bottomRight,
                   child: TextButton(
-                    child: Text("Edit profile ->",
+                    child: Text("Edit Profile ->",
                         style: TextStyle(
                           color: Color(0xff232122),
                           fontSize: 14,
@@ -496,7 +511,7 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: TextButton(
-                    child: Text("Your weekly report ->  ",
+                    child: Text("Your Weekly Report ->  ",
                         style: TextStyle(
                           color: Color(0xff232122),
                           fontSize: 20,
@@ -519,7 +534,7 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text("Total CO2 emittion",
+                          Text("Total CO2 Emittion",
                               style: TextStyle(
                                 color: Color(0xff232122),
                                 fontSize: 14,
@@ -1317,7 +1332,21 @@ class ScoreboardPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(50, 70, 30, 10),
+                margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  child: Text("Logout",
+                      style: TextStyle(
+                        color: Color(0xff232122),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                )),
+            Container(
+              padding: EdgeInsets.fromLTRB(50, 25, 30, 10),
               alignment: Alignment.centerLeft,
               child: Text("Scoreboard",
                   style: TextStyle(
@@ -1576,7 +1605,16 @@ class EditProfilePage extends StatelessWidget {
   }
 }
 
-class LearnPage extends StatelessWidget {
+class LearnPage extends StatefulWidget {
+  const LearnPage({Key? key}) : super(key: key);
+
+  @override
+  State<LearnPage> createState() => _LearnPageState();
+}
+
+class _LearnPageState extends State<LearnPage> {
+  String transport = 'Car';
+
   @override
   Widget build(BuildContext context) {
     double tab_width = MediaQuery.of(context).size.width / 3;
@@ -1626,12 +1664,34 @@ class LearnPage extends StatelessWidget {
           ),
           color: Color(0xffCBCBCB),
         ),
-        body: Stack(
+        body: Column(
           children: [
             Container(
+                margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  child: Text("Logout",
+                      style: TextStyle(
+                        color: Color(0xff232122),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                )),
+            Container(
+              padding: EdgeInsets.fromLTRB(35, 5, 30, 5),
+              child: Text("CO2 emittions compared",
+                  style: TextStyle(
+                      fontSize: 36,
+                      color: Color(0xff232122),
+                      fontWeight: FontWeight.bold)),
+            ),
+            Container(
               //width: MediaQuery.of(context).size.width * 0.8,
-              margin: EdgeInsets.fromLTRB(35, 150, 35, 50),
-              padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+              margin: EdgeInsets.fromLTRB(35, 20, 35, 20),
+              padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
               decoration: BoxDecoration(
                 color: Color(0xffEDEDED),
                 borderRadius: BorderRadius.circular(15),
@@ -1643,24 +1703,60 @@ class LearnPage extends StatelessWidget {
                       child: Row(
                     children: [
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("       Travel distance (Km)",
-                              style: TextStyle(
-                                  color: Color(0xff232122), fontSize: 16)),
-                          Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE5E5E5),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: TextField(
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Travel distance (Km)"))),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Text("Transport to explore:"),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               decoration: BoxDecoration(
                                 color: Color(0xffE5E5E5),
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              child: TextField(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none))),
-                        ],
-                      ),
+                              child: DropdownButton<String>(
+                                value: transport,
+                                icon: const Icon(Icons.arrow_downward),
+                                iconSize: 24,
+                                underline: Container(),
+                                style:
+                                    const TextStyle(color: Color(0xff232122)),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    transport = newValue!;
+                                  });
+                                },
+                                items: <String>[
+                                  'Walk',
+                                  'Cycle',
+                                  'Car',
+                                  'Bus',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            )
+                          ]),
                       ElevatedButton(
                         child: Text("View",
                             style: TextStyle(
@@ -1681,18 +1777,16 @@ class LearnPage extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  Text("graph")
                 ],
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(35, 50, 30, 50),
-              child: Text("CO2 emittions compared",
-                  style: TextStyle(
-                      fontSize: 36,
-                      color: Color(0xff232122),
-                      fontWeight: FontWeight.bold)),
-            )
+                padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                decoration: BoxDecoration(
+                  color: Color(0xffEDEDED),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Text("graph"))
           ],
         ));
   }
