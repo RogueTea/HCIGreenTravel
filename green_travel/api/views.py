@@ -1,3 +1,28 @@
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import JourneySerializer
+from .models import *
+
+
+
+@api_view(['GET'])
+def apiOverview(request):
+    api_urls = {
+        'List' : '/Journey-list/',
+        'Detail View' : '/Journey-detail/<str:pk>/',
+        'Create' : '/Journey-create/',
+        'Update' : '/Journey-update/<str:pk>/',
+        'Delete' : '/Journey-delete/<str:pk>/',
+    }
+    return Response(api_urls)
+
+
+
+
+
+
+
+"""
 from rest_framework import status
 from api.models import *
 from rest_framework.views import APIView
@@ -83,3 +108,4 @@ class addJourney(APIView):
                 return Response(data)
             except:
                 return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)       
+"""

@@ -2,7 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+# 
+class Journey(models.Model):
+    title = models.CharField(max_length=200)
+    admin = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    objects = models.Manager()
+    def __str__(self):
+        return self.title
 
+"""
 class Default(models.Model):
     transport = models.CharField(max_length=10, primary_key=True)
     emissions = models.IntegerField(default =0)
@@ -33,4 +41,7 @@ class UserProfile(models.Model):
 class Scoreboard(models.Model):
     journeyid = models.ForeignKey(Journey, on_delete=models.CASCADE)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+"""
+
+
 

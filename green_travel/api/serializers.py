@@ -5,8 +5,13 @@ from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from .models import *
 
 
+class JourneySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Journey
+        fields = '__all__'
 
 
+"""
 class UserProfileSerializer(serializers.ModelSerializer):
     user=serializers.StringRelatedField(read_only=True)
     class Meta:
@@ -36,3 +41,4 @@ class JourneySerializer(ModelSerializer):
     class Meta:
         model = Journey
         fields = ('distance','transport')
+"""
