@@ -17,12 +17,40 @@ def apiOverview(request):
     return Response(api_urls)
 
 
+#Journey 
 @api_view(['GET'])
 def JourneyList(request):
     Journeys = Journey.objects.all()
     serializer = JourneySerializer(Journeys, many = True)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+def JourneyDetail(request, pk):
+    Journeys = Journey.objects.get(id=pk)
+    serializer = JourneySerializer(Journeys, many = False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def JourneyUpdate(request, pk):
+    Journeys = Journey.objects.get(id = pk)
+    serializer = JourneySerializer(instance=Journeys, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def journeyCreate(request):
+    serializer = JourneySerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def JourneyDelete(request, pk):
+    journeys = Journey.objects.get(id = pk)
+    journeys.delete()
+    return Response("Journey deleted successfully.")
 
 
 

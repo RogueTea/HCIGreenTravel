@@ -5,6 +5,11 @@ from . import views
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
     path('journey-list/', views.JourneyList, name="journey-list"),
+    path('journey-detail/<str:pk>/', views.JourneyDetail, name="journey-Detail"),
+    path('journey-update/<str:pk>/', views.JourneyUpdate, name="journey-update"),
+    path('journey-create/', views.journeyCreate, name="journey-Create"),
+    path('journey-delete/', views.JourneyDelete, name="journey-delete"),
+
   ]
 
 

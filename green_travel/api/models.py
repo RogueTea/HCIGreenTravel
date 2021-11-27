@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 # 
 class Journey(models.Model):
     title = models.CharField(max_length=200)
+    distance = models.IntegerField(default =0)
+    emitted = models.IntegerField(default =0, null=True)
     admin = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     objects = models.Manager()
     def __str__(self):
