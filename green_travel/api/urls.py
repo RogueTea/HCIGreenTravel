@@ -7,8 +7,8 @@ urlpatterns = [
     path('journey-list/', views.JourneyList, name="journey-list"),
     path('journey-detail/<str:pk>/', views.JourneyDetail, name="journey-Detail"),
     path('journey-update/<str:pk>/', views.JourneyUpdate, name="journey-update"),
-    path('journey-create/', views.journeyCreate, name="journey-Create"),
-    path('journey-delete/', views.JourneyDelete, name="journey-delete"),
+    path('journey-create/', views.JourneyCreate, name="journey-Create"),
+    path('journey-delete/<str:pk>', views.JourneyDelete, name="journey-delete"),
 
   ]
 

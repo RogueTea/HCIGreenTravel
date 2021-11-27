@@ -40,7 +40,7 @@ def JourneyUpdate(request, pk):
     return Response(serializer.data)
 
 @api_view(['POST'])
-def journeyCreate(request):
+def JourneyCreate(request):
     serializer = JourneySerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
