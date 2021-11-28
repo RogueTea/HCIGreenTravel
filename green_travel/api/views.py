@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import JourneySerializer
 from .models import *
-
+from rest_framework.filters import (SearchFilter, OrderingFilter)
 
 
 @api_view(['GET'])
@@ -23,6 +23,8 @@ def apiOverview(request):
 def JourneyList(request):
     Journeys = Journey.objects.all()
     serializer = JourneySerializer(Journeys, many = True)
+    filter_backends = [SearchFilter]
+    search_fields = ['title']
 
     
     return Response(serializer.data)
