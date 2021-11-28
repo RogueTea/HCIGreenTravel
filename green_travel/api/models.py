@@ -6,7 +6,7 @@ from django.db import models
 class User(models.Model):
     username = models.CharField(max_length=255, null=False)
     email = models.EmailField(max_length=255, null=False)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=255)
     logged = models.BooleanField(default=False)
     userid = models.AutoField(primary_key=True)
     token = models.CharField(max_length=500, null=True, default="")

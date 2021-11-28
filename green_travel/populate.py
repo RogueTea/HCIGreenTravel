@@ -14,7 +14,7 @@ def clean():
     Default.objects.all().delete()
     Journey.objects.all().delete()
     User.objects.all().delete()
-    Scoreboard.objects.all().delete()
+    #Scoreboard.objects.all().delete()
 
 def addTrans(transport):
     transport = Default.objects.get_or_create(transport=transport["method"], emissions = transport["co2"])

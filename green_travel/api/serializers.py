@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from .models import *
-from django.db.models import Q # for queries
+from django.db.models import Q 
 from rest_framework.validators import UniqueValidator
 from django.core.exceptions import ValidationError
 from uuid import uuid4 #for unique token 
