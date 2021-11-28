@@ -1,7 +1,6 @@
 from django.db.models.query import QuerySet
 from rest_framework.decorators import api_view
 from django.shortcuts import render, redirect
-from .forms import RegisterForm
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import JourneySerializer
@@ -46,8 +45,8 @@ class Logout(generics.GenericAPIView):
 class RecordJourney(generics.ListAPIView):
     serializer_class = JourneySerializer
 
-    #def get_queryset(self):
-    #    return Journey.objects.filter(admin=User)
+    def get_queryset(self):            
+        return Journey.objects.filter(admin=1)
 
 
 @api_view(['GET'])

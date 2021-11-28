@@ -2,7 +2,7 @@
 
 from django.urls import path
 from . import views
-from .views import Register , Login , Logout
+from .views import RecordJourney, Register , Login , Logout
 
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
