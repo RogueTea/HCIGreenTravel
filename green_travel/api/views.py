@@ -5,15 +5,20 @@ from .models import *
 from rest_framework import generics 
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from .models import User
+from rest_framework import status
+from api.models import *
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
-
-# GET request 
+# POST/GET request
+#View all users registered and register new user
 class Register(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
+#POST request
 class Login(generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserLoginSerializer
@@ -25,6 +30,7 @@ class Login(generics.GenericAPIView):
         return Response(serializer_class.errors, status=HTTP_400_BAD_REQUEST)
 
 
+#POST Request
 class Logout(generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserLogoutSerializer
@@ -35,6 +41,8 @@ class Logout(generics.GenericAPIView):
             return Response(serializer_class.data, status=HTTP_200_OK)
         return Response(serializer_class.errors, status=HTTP_400_BAD_REQUEST)
 
+
+# Filter journeys by user 
 class JourneyListUser(generics.ListAPIView):
     serializer_class = JourneySerializer
 
@@ -50,11 +58,19 @@ def apiOverview(request):
         'Create' : '/Journey-create/',
         'Update' : '/Journey-update/<str:pk>/',
         'Delete' : '/Journey-delete/<str:pk>/',
+        'Add User' : '/addUser',
+        'Login' : '/login',
+        'Logout' : '/logout',
+        'List journeys by user' :  '<int:user_id>/journeys/',
+        'Learn' : 'learn/',
+
     }
     return Response(api_urls)
 
 
-#Journey 
+#Journey views
+
+#GET request for all journeys in db
 @api_view(['GET'])
 def JourneyList(request):
     Journeys = Journey.objects.all()
@@ -62,7 +78,7 @@ def JourneyList(request):
     
     return Response(serializer.data)
 
-
+#GET request for Single journey via primary key identifier
 @api_view(['GET'])
 def JourneyDetail(request, pk):
     Journeys = Journey.objects.get(id=pk)
@@ -70,6 +86,7 @@ def JourneyDetail(request, pk):
     return Response(serializer.data)
 
 
+#POST request for updating a single journey via primary key identifier
 @api_view(['POST'])
 def JourneyUpdate(request, pk):
     Journeys = Journey.objects.get(id = pk)
@@ -78,6 +95,8 @@ def JourneyUpdate(request, pk):
         serializer.save()
     return Response(serializer.data)
 
+
+#POST request create new journey
 @api_view(['POST'])
 def JourneyCreate(request):
     serializer = JourneySerializer(data=request.data)
@@ -85,35 +104,13 @@ def JourneyCreate(request):
         serializer.save()
     return Response(serializer.data)
 
+#DELETE request for a single journey
 @api_view(['DELETE'])
 def JourneyDelete(request, pk):
     journeys = Journey.objects.get(id = pk)
     journeys.delete()
     return Response("Journey deleted successfully.")
 
-
-"""
-from rest_framework import status
-from api.models import *
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from api.serializers import *
-from rest_framework.permissions import IsAuthenticated
-
-from rest_framework.generics import (ListCreateAPIView,RetrieveUpdateDestroyAPIView,)
-from rest_framework.permissions import IsAuthenticated
-from .models import UserProfile
-from .serializers import UserProfileSerializer
-
-
-class UserProfileListCreateView(ListCreateAPIView):
-    queryset=UserProfile.objects.all()
-    serializer_class=UserProfileSerializer
-    permission_classes=[IsAuthenticated]
-
-    def perform_create(self, serializer):
-        user=self.request.user
-        serializer.save(user=user)
 
 
 
@@ -156,6 +153,7 @@ class co2Learn(APIView):
             except:
                 return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)       
 
+"""
 class addJourney(APIView):
     def post(self,request):
         data = {}

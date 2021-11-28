@@ -6,9 +6,5 @@ from .models import *
 
 admin.site.register(Journey)
 admin.site.register(User)
-
-"""
-admin.site.register(Journey)
 admin.site.register(Default)
-admin.site.register(UserProfile)
-"""
+

@@ -36,18 +36,10 @@ class Journey(models.Model):
         return self.title
 
 
-""""
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    journey = models.ForeignKey(Journey, default=None, null=True, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.user.username
 
 class Scoreboard(models.Model):
     journeyid = models.ForeignKey(Journey, on_delete=models.CASCADE)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 

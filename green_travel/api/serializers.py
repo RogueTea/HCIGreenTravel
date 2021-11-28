@@ -3,9 +3,9 @@ from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from .models import *
 from django.db.models import Q # for queries
 from rest_framework.validators import UniqueValidator
-from .models import User
 from django.core.exceptions import ValidationError
 from uuid import uuid4 #for unique token 
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
             raise ValidationError("User credentials are not correct.")
         user = User.objects.get(email=email)
 
-        #logged in
+        #User has sucessfully logged in
         if user.logged:
             raise ValidationError("User logged in.")
         user.logged = True 
@@ -68,15 +68,18 @@ class UserLoginSerializer(serializers.ModelSerializer):
             'token',
         )
 
+
         read_only_fields = (
             'token',
         )
 
 
+# to log out users token needs to be inputted
 class UserLogoutSerializer(serializers.ModelSerializer):
     token = serializers.CharField()
     status = serializers.CharField(required=False, read_only=True)
 
+    # check if token is valid and user is logged in
     def validate(self, data):
         token = data.get("token", None)
         user = None
@@ -124,34 +127,3 @@ class EmissionSerializer(ModelSerializer):
         fields = '__all__'
 
 
-"""
-class UserProfileSerializer(serializers.ModelSerializer):
-    user=serializers.StringRelatedField(read_only=True)
-    class Meta:
-        model= UserProfile
-        fields='__all__'
-
-
-class TransportName(PrimaryKeyRelatedField): 
-    def display_value(self, instance):
-        return instance.name
-
-class DefaultSerializer(ModelSerializer):
-    class Meta:
-        model = Default
-        fields = '__all__'
-
-class EmissionSerializer(ModelSerializer):
-    transport = TransportName(queryset=Default.objects.all())
-
-    class Meta:
-        model = Default
-        fields = '__all__'
-
-class JourneySerializer(ModelSerializer):
-    transport = TransportName(queryset=Default.objects.all())
-        
-    class Meta:
-        model = Journey
-        fields = ('distance','transport')
-"""
