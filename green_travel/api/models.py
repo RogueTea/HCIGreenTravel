@@ -36,10 +36,10 @@ class Journey(models.Model):
         return self.title
 
 
-
+"""
 class Scoreboard(models.Model):
     journeyid = models.ForeignKey(Journey, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
+"""
 
 

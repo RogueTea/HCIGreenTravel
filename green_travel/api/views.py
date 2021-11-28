@@ -107,7 +107,7 @@ def JourneyCreate(request):
 #DELETE request for a single journey
 @api_view(['DELETE'])
 def JourneyDelete(request, pk):
-    journeys = Journey.objects.get(id = pk)
+    journeys = Journey.objects.get(journey_id = pk)
     journeys.delete()
     return Response("Journey deleted successfully.")
 
