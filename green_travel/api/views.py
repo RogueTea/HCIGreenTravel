@@ -1,4 +1,6 @@
 from rest_framework.decorators import api_view
+from django.shortcuts import render, redirect
+from .forms import RegisterForm
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import JourneySerializer
@@ -60,6 +62,19 @@ def JourneyDelete(request, pk):
     journeys = Journey.objects.get(id = pk)
     journeys.delete()
     return Response("Journey deleted successfully.")
+
+
+# Register
+def register(response):
+    if response.method == "POST":
+        form = RegisterForm(response.POST)
+        if form.is_valid():
+            form.save()
+        return redirect("")
+    else:
+        form = RegisterForm()
+
+    return render(response) 
 
 
 """
