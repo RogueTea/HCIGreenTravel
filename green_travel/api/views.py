@@ -23,9 +23,6 @@ def apiOverview(request):
 def JourneyList(request):
     Journeys = Journey.objects.all()
     serializer = JourneySerializer(Journeys, many = True)
-    filter_backends = [SearchFilter]
-    search_fields = ['title']
-
     
     return Response(serializer.data)
 
@@ -35,6 +32,13 @@ def JourneyDetail(request, pk):
     Journeys = Journey.objects.get(id=pk)
     serializer = JourneySerializer(Journeys, many = False)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def JourneyByUser(request,User):
+    Journeys = Journey.objects.filter(admin=User)
+    serializer = JourneySerializer(Journeys, many = True)
+    return Response(serializer.data)
+
 
 @api_view(['POST'])
 def JourneyUpdate(request, pk):

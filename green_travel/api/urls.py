@@ -9,6 +9,7 @@ urlpatterns = [
     path('journey-update/<str:pk>/', views.JourneyUpdate, name="journey-update"),
     path('journey-create/', views.JourneyCreate, name="journey-Create"),
     path('journey-delete/<str:pk>', views.JourneyDelete, name="journey-delete"),
+    path("<str:user>/journeys/", views.JourneyByUser, name="journey-user"),
 
   ]
 
