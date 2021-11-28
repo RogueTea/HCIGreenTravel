@@ -2,6 +2,8 @@
 
 from django.urls import path
 from . import views
+from .views import Record , Login , Logout
+
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
     path('journey-list/', views.JourneyList, name="journey-list"),
@@ -9,7 +11,10 @@ urlpatterns = [
     path('journey-update/<str:pk>/', views.JourneyUpdate, name="journey-update"),
     path('journey-create/', views.JourneyCreate, name="journey-Create"),
     path('journey-delete/<str:pk>', views.JourneyDelete, name="journey-delete"),
-    path("<str:user>/journeys/", views.JourneyByUser, name="journey-user"),
+    #path("<str:user>/journeys/", views.JourneyByUser, name="journey-user"),
+    path('addUser/', Record.as_view(), name="register"),
+    path('login', Login.as_view(), name="login"),
+    path('logout', Logout.as_view(), name="logout"),
 
   ]
 

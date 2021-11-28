@@ -3,6 +3,18 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 # 
+class User(models.Model):
+    username = models.CharField(max_length=255, null=False)
+    email = models.EmailField(max_length=255, null=False)
+    password = models.CharField(max_length=50)
+    logged = models.BooleanField(default=False)
+    userid = models.AutoField(primary_key=True)
+    token = models.CharField(max_length=500, null=True, default="")
+    
+
+    def __str__(self):
+        return "{} -{}".format(self.username, self.email)
+
 
 class Default(models.Model):
     transport = models.CharField(max_length=10, primary_key=True)
