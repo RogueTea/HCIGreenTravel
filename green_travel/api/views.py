@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from rest_framework.decorators import api_view
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
@@ -7,21 +8,20 @@ from .serializers import JourneySerializer
 from .models import *
 from rest_framework.filters import (SearchFilter, OrderingFilter)
 from django.shortcuts import redirect
-from rest_framework import generics
+from rest_framework import generics, serializers
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from .models import User
 from .serializers import UserSerializer, UserLoginSerializer, UserLogoutSerializer
 
 
-class Record(generics.ListCreateAPIView):
-    # get method handler
+# GET request 
+class Register(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class Login(generics.GenericAPIView):
-    # get method handler
     queryset = User.objects.all()
     serializer_class = UserLoginSerializer
 
@@ -41,6 +41,13 @@ class Logout(generics.GenericAPIView):
         if serializer_class.is_valid(raise_exception=True):
             return Response(serializer_class.data, status=HTTP_200_OK)
         return Response(serializer_class.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class RecordJourney(generics.ListAPIView):
+    serializer_class = JourneySerializer
+
+    #def get_queryset(self):
+    #    return Journey.objects.filter(admin=User)
 
 
 @api_view(['GET'])
