@@ -32,22 +32,22 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
-    user_id = serializers.CharField()
+    email = serializers.CharField()
     password = serializers.CharField()
     token = serializers.CharField(required=False, read_only=True)
 
 
 
     def validate(self, data):
-        user_id = data.get("user_id", None)
+        email = data.get("email", None)
         password = data.get("password", None)
-        if not user_id and not password:
+        if not email and not password:
             raise ValidationError("Details not entered.")
         user = None
-        user = User.objects.filter(Q(email=user_id) & Q(password=password)).distinct()
+        user = User.objects.filter(Q(email=email) & Q(password=password)).distinct()
         if not user.exists():
             raise ValidationError("User credentials are not correct.")
-        user = User.objects.get(email=user_id)
+        user = User.objects.get(email=email)
         if user.logged:
             raise ValidationError("User logged in.")
         user.logged = True
@@ -59,7 +59,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'user_id',
+            'email',
             'password',
             'token',
         )
