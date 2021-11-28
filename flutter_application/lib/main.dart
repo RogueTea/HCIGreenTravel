@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/chart_container.dart';
+import 'chart/bar_chart.dart';
 
 // Setup all the blank pages outlined in the figma wireframes.
 // Added basic button routing to map out the navigation of the app.
@@ -34,7 +36,6 @@ class TextBoxInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 0.0),
-        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
         decoration: BoxDecoration(
           color: Color(0xffE3E3E3),
           borderRadius: BorderRadius.circular(30),
@@ -534,7 +535,7 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text("Total CO2 Emittion",
+                          Text("Total CO2 Emission",
                               style: TextStyle(
                                 color: Color(0xff232122),
                                 fontSize: 14,
@@ -1109,10 +1110,10 @@ class _EditJourneyPageState extends State<EditJourneyPage> {
 class ScoreDisplay extends StatelessWidget {
   final int _rank;
   final String _username;
-  final int _emittion;
-  final int _maxEmittion;
+  final int _emission;
+  final int _maxEmission;
   //final Object _controller;
-  ScoreDisplay(this._rank, this._username, this._emittion, this._maxEmittion);
+  ScoreDisplay(this._rank, this._username, this._emission, this._maxEmission);
   @override
   Widget build(BuildContext context) {
     double height = 40;
@@ -1154,7 +1155,7 @@ class ScoreDisplay extends StatelessWidget {
                     Container(
                       height: height,
                       width: MediaQuery.of(context).size.width *
-                          (_emittion / _maxEmittion * 0.6),
+                          (_emission / _maxEmission * 0.6),
                       decoration: BoxDecoration(
                         color: Color(0xffB0B0B0),
                       ),
@@ -1162,7 +1163,7 @@ class ScoreDisplay extends StatelessWidget {
                     Container(
                         padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                         alignment: Alignment.centerRight,
-                        child: Text(_emittion.toString() + "g",
+                        child: Text(_emission.toString() + "g",
                             style: TextStyle(
                               color: Color(0xff232122),
                               fontSize: 14,
@@ -1187,11 +1188,11 @@ class ScoreDisplay extends StatelessWidget {
 class UserScoreDisplay extends StatelessWidget {
   final int _rank;
   final String _username;
-  final int _emittion;
-  final int _maxEmittion;
+  final int _emission;
+  final int _maxEmission;
   //final Object _controller;
   UserScoreDisplay(
-      this._rank, this._username, this._emittion, this._maxEmittion);
+      this._rank, this._username, this._emission, this._maxEmission);
   @override
   Widget build(BuildContext context) {
     double height = 40;
@@ -1248,7 +1249,7 @@ class UserScoreDisplay extends StatelessWidget {
                     Container(
                       height: height,
                       width: MediaQuery.of(context).size.width *
-                          (_emittion / _maxEmittion * 0.6),
+                          (_emission / _maxEmission * 0.6),
                       decoration: BoxDecoration(
                         color: Color(0xffB0B0B0),
                       ),
@@ -1256,7 +1257,7 @@ class UserScoreDisplay extends StatelessWidget {
                     Container(
                         padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                         alignment: Alignment.centerRight,
-                        child: Text(_emittion.toString() + "g",
+                        child: Text(_emission.toString() + "g",
                             style: TextStyle(
                               color: Color(0xff232122),
                               fontSize: 14,
@@ -1682,7 +1683,7 @@ class _LearnPageState extends State<LearnPage> {
                 )),
             Container(
               padding: EdgeInsets.fromLTRB(35, 5, 30, 5),
-              child: Text("CO2 emittions compared",
+              child: Text("CO2 emissions compared",
                   style: TextStyle(
                       fontSize: 36,
                       color: Color(0xff232122),
@@ -1781,12 +1782,26 @@ class _LearnPageState extends State<LearnPage> {
               ),
             ),
             Container(
-                padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                margin: EdgeInsets.fromLTRB(35, 10, 35, 0),
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width * 0.25, 0, 0, 0),
                 decoration: BoxDecoration(
-                  color: Color(0xffEDEDED),
+                  color: Color(0xffE5E5E5),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Text("graph"))
+                child: Row(children: [
+                  RotatedBox(
+                      quarterTurns: 3,
+                      child: new Text("CO2 emission (g)",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xff232122),
+                              fontWeight: FontWeight.bold))),
+                  ChartContainer(
+                      title: 'Bar Chart',
+                      color: Color(0xffE5E5E5),
+                      chart: BarChartContent())
+                ]))
           ],
         ));
   }
