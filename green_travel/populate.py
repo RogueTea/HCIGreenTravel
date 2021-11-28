@@ -13,7 +13,6 @@ from api.models import *
 def clean():
     Default.objects.all().delete()
     Journey.objects.all().delete()
-    UserProfile.objects.all().delete()
     User.objects.all().delete()
     Scoreboard.objects.all().delete()
 
