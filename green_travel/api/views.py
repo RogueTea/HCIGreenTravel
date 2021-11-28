@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from .serializers import JourneySerializer
 from .models import *
 
@@ -22,6 +23,8 @@ def apiOverview(request):
 def JourneyList(request):
     Journeys = Journey.objects.all()
     serializer = JourneySerializer(Journeys, many = True)
+
+    
     return Response(serializer.data)
 
 
@@ -51,9 +54,6 @@ def JourneyDelete(request, pk):
     journeys = Journey.objects.get(id = pk)
     journeys.delete()
     return Response("Journey deleted successfully.")
-
-
-
 
 
 """

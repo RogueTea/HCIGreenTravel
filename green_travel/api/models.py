@@ -3,10 +3,20 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 # 
+
+class Default(models.Model):
+    transport = models.CharField(max_length=10, primary_key=True)
+    emissions = models.IntegerField(default =0)
+
+    def __str__(self):
+        return self.transport
+
+
 class Journey(models.Model):
     title = models.CharField(max_length=200)
     distance = models.IntegerField(default =0)
     emitted = models.IntegerField(default =0, null=True)
+    transport = models.ForeignKey(Default,on_delete=models.CASCADE, default = "Car")
     admin = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     objects = models.Manager()
     def __str__(self):
