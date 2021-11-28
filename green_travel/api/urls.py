@@ -2,7 +2,7 @@
 
 from django.urls import path
 from . import views
-from .views import RecordJourney, Register , Login , Logout
+from .views import *
 
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
@@ -15,6 +15,7 @@ urlpatterns = [
     path('addUser/', Register.as_view(), name="register"),
     path('login', Login.as_view(), name="login"),
     path('logout', Logout.as_view(), name="logout"),
+    path('<int:user_id>/journeys/', JourneyListUser.as_view(), name="JourneyListUser"),
 
   ]
 

@@ -1,13 +1,11 @@
-from rest_framework.fields import ChoiceField
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from .models import *
 from django.db.models import Q # for queries
-from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import User
 from django.core.exceptions import ValidationError
-from uuid import uuid4 #for token 
+from uuid import uuid4 #for unique token 
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -41,17 +39,23 @@ class UserLoginSerializer(serializers.ModelSerializer):
     def validate(self, data):
         email = data.get("email", None)
         password = data.get("password", None)
+
+        #error if email and password are not correct 
         if not email and not password:
             raise ValidationError("Details not entered.")
         user = None
         user = User.objects.filter(Q(email=email) & Q(password=password)).distinct()
+
+        # error if user has not input email correctly 
         if not user.exists():
             raise ValidationError("User credentials are not correct.")
         user = User.objects.get(email=email)
+
+        #logged in
         if user.logged:
             raise ValidationError("User logged in.")
-        user.logged = True
-        data['token'] = uuid4()
+        user.logged = True 
+        data['token'] = uuid4() # set unique token 
         user.token = data['token']
         user.save()
         return data
@@ -75,7 +79,6 @@ class UserLogoutSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         token = data.get("token", None)
-        print(token)
         user = None
         try:
             user = User.objects.get(token=token)
@@ -101,7 +104,7 @@ class UserLogoutSerializer(serializers.ModelSerializer):
 class JourneySerializer(serializers.ModelSerializer):
     class Meta:
         model = Journey
-        fields = ('title', 'distance','transport', 'admin')
+        fields = ('title', 'distance','transport', 'user_id')
 
 
 class TransportName(PrimaryKeyRelatedField): 

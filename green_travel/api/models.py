@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+
 
 # Create your models here.
 # 
@@ -26,11 +26,11 @@ class Default(models.Model):
 
 class Journey(models.Model):
     title = models.CharField(max_length=200)
-    journeyid =  models.AutoField(primary_key=True)
+    journey_id =  models.AutoField(primary_key=True)
     distance = models.IntegerField(default =0)
     emitted = models.IntegerField(default =0, null=True)
     transport = models.ForeignKey(Default,on_delete=models.CASCADE, default = "Car")
-    admin = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     objects = models.Manager()
     def __str__(self):
         return self.title
