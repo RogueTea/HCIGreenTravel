@@ -13,7 +13,7 @@ class User(models.Model):
     
 
     def __str__(self):
-        return "{} -{}".format(self.username, self.email)
+        return self.email
 
 
 class Default(models.Model):

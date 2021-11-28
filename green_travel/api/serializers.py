@@ -7,7 +7,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from .models import User
 from django.core.exceptions import ValidationError
-from uuid import uuid4
+from uuid import uuid4 #for token 
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -32,19 +32,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
-    # to accept either username or email
     user_id = serializers.CharField()
     password = serializers.CharField()
     token = serializers.CharField(required=False, read_only=True)
 
+
+
     def validate(self, data):
-        # user,email,password validator
         user_id = data.get("user_id", None)
         password = data.get("password", None)
         if not user_id and not password:
             raise ValidationError("Details not entered.")
         user = None
-        # if the email has been passed
         user = User.objects.filter(Q(email=user_id) & Q(password=password)).distinct()
         if not user.exists():
             raise ValidationError("User credentials are not correct.")
