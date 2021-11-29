@@ -24,7 +24,7 @@ def addUser(u):
 
 def addJourn(j):
     journey = Journey.objects.get_or_create(distance=j["distance"], 
-    transport=Default.objects.get(transport=j["transport"]),emitted =j["emitted"],user_id=User.objects.get(pk=j["user_id"])) 
+    transport=Default.objects.get(transport=j["transport"]),emitted =j["emitted"],user_id=User.objects.get(pk=j["user_id"]), date = j['date']) 
 
 
 def populate():
@@ -49,13 +49,13 @@ def populate():
     ]
 
     journey =[
-    {'distance': 100, 'transport': 'Train', 'emitted': 4100, 'user_id': 1},
-    {'distance': 15, 'transport': 'walk', 'emitted': 0, 'user_id': 2},
-    {'distance': 50, 'transport': 'Bus', 'emitted': 5250, 'user_id': 3},
-    {'distance': 80, 'transport': 'Car (Petrol)', 'emitted': 15360, 'user_id': 1},
-    {'distance': 60, 'transport': 'Car (Petrol)', 'emitted': 11520, 'user_id': 1},
-    {'distance': 30, 'transport': 'Train', 'emitted': 1230, 'user_id': 1},
-    {'distance': 80, 'transport': 'Train', 'emitted': 3280, 'user_id': 1}
+    {'distance': 100, 'transport': 'Train', 'emitted': 4100, 'user_id': 1, 'date': '2021-11-28'},
+    {'distance': 15, 'transport': 'walk', 'emitted': 0, 'user_id': 2, 'date': '2021-11-29'},
+    {'distance': 50, 'transport': 'Bus', 'emitted': 5250, 'user_id': 3, 'date': '2021-11-29'},
+    {'distance': 80, 'transport': 'Car (Petrol)', 'emitted': 15360, 'user_id': 1, 'date': '2021-11-23'},
+    {'distance': 60, 'transport': 'Car (Petrol)', 'emitted': 11520, 'user_id': 1, 'date': '2021-11-23'},
+    {'distance': 30, 'transport': 'Train', 'emitted': 1230, 'user_id': 1, 'date': '2021-11-25'},
+    {'distance': 80, 'transport': 'Train', 'emitted': 3280, 'user_id': 1, 'date': '2021-11-26'}
     ]
 
     print("Populating defaults")

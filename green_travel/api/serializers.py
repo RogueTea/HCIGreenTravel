@@ -106,7 +106,7 @@ class UserLogoutSerializer(serializers.ModelSerializer):
 class JourneySerializer(serializers.ModelSerializer):
     class Meta:
         model = Journey
-        fields = ('distance','transport', 'emitted', 'user_id')
+        fields = ('distance','transport', 'emitted', 'user_id','date')
 
 
 class TransportName(PrimaryKeyRelatedField): 
