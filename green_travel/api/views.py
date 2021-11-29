@@ -10,7 +10,6 @@ from api.models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-
 # POST/GET request
 #View all users registered and register new user
 class Register(generics.ListCreateAPIView):
@@ -63,6 +62,8 @@ def apiOverview(request):
         'Logout' : '/logout',
         'List journeys by user' :  '<int:user_id>/journeys/',
         'Learn' : 'learn/',
+        'Scoreboard' : 'scoreboard/',
+        'Weekly Report' : 'weeklyReport/'
 
     }
     return Response(api_urls)
@@ -167,7 +168,29 @@ class co2Learn(APIView):
                 data["average"] = average
                 return Response(data)
             except:
-                return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)       
+                return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)      
+
+
+class scoreboard(APIView):
+    def get(self,request):
+        data ={}
+
+        #get journeys starting from least emissions
+        scores = Journey.objects.all().order_by('emitted')
+
+        serializer = ScoreboardSerializer(scores, many=True)
+        data['serializer'] = serializer.data
+        return Response(data)
+       
+
+class weeklyReport(APIView):
+    def get(self, request):
+        data ={}
+
+        reports = Journey.objects.filter(user_id=User.objects.get(pk=1))
+        serializer = ReportSerializer(reports, many=True)
+        data['serializer'] = serializer.data
+        return Response(data) 
 
 """
 class addJourney(APIView):
