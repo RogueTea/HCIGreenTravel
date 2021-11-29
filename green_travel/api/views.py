@@ -99,9 +99,28 @@ def JourneyUpdate(request, pk):
 #POST request create new journey
 @api_view(['POST'])
 def JourneyCreate(request):
+    data = {}
+
     serializer = JourneySerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        try:
+            transport = serializer.data["transport"]
+            Tobject = Default.objects.get(pk=transport)
+            emissions = Tobject.emissions
+            distance = request.data["distance"]
+
+            # adding journey to DB
+            journey = Journey.objects.create(
+                transport = Tobject,
+                distance = distance,
+                emitted = distance * emissions
+            )
+
+            data['journey'] = Journey.objects.filter(journeyid=journey.journeyid).values()[0]
+            return Response(data)
+        except:
+                return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)  
+
     return Response(serializer.data)
 
 #DELETE request for a single journey
@@ -110,9 +129,6 @@ def JourneyDelete(request, pk):
     journeys = Journey.objects.get(journey_id = pk)
     journeys.delete()
     return Response("Journey deleted successfully.")
-
-
-
 
 
 # Create your views here.
