@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application/chart_container.dart';
 import 'chart/bar_chart.dart';
-
-// Setup all the blank pages outlined in the figma wireframes.
-// Added basic button routing to map out the navigation of the app.
 
 void main() {
   runApp(MaterialApp(
@@ -36,6 +34,7 @@ class TextBoxInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 0.0),
+        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
         decoration: BoxDecoration(
           color: Color(0xffE3E3E3),
           borderRadius: BorderRadius.circular(30),
@@ -1610,11 +1609,12 @@ class LearnPage extends StatefulWidget {
   const LearnPage({Key? key}) : super(key: key);
 
   @override
-  State<LearnPage> createState() => _LearnPageState();
+  State<LearnPage> createState() => LearnPageState();
 }
 
-class _LearnPageState extends State<LearnPage> {
+class LearnPageState extends State<LearnPage> {
   String transport = 'Car';
+  static var distanceInput = TextEditingController(text: "0");
 
   @override
   Widget build(BuildContext context) {
@@ -1707,6 +1707,11 @@ class _LearnPageState extends State<LearnPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
+                              margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Text("Distance Travelled (km):"),
+                            ),
+                            Container(
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
                                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -1714,14 +1719,18 @@ class _LearnPageState extends State<LearnPage> {
                                   color: Color(0xffE5E5E5),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
-                                child: TextField(
+                                child: TextFormField(
+                                    controller: distanceInput,
                                     decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Travel distance (Km)"))),
+                                        border: InputBorder.none),
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ])),
                             Container(
                               margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                               padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Text("Transport to explore:"),
+                              child: Text("Transport:"),
                             ),
                             Container(
                               alignment: Alignment.center,
@@ -1771,7 +1780,7 @@ class _LearnPageState extends State<LearnPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             )),
-                        onPressed: () {},
+                        onPressed: stateSetter,
                       ),
                     ],
                   )),
@@ -1784,7 +1793,7 @@ class _LearnPageState extends State<LearnPage> {
             Container(
                 margin: EdgeInsets.fromLTRB(35, 10, 35, 0),
                 padding: EdgeInsets.fromLTRB(
-                    MediaQuery.of(context).size.width * 0.25, 0, 0, 0),
+                    MediaQuery.of(context).size.width * 0.26, 0, 0, 0),
                 decoration: BoxDecoration(
                   color: Color(0xffE5E5E5),
                   borderRadius: BorderRadius.circular(15),
@@ -1804,5 +1813,9 @@ class _LearnPageState extends State<LearnPage> {
                 ]))
           ],
         ));
+  }
+
+  void stateSetter() {
+    setState(() {});
   }
 }

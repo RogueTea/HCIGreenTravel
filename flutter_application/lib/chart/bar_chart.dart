@@ -3,7 +3,12 @@ import 'package:flutter_application/chart_data/bar_chart_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class BarChartContent extends StatelessWidget {
+class BarChartContent extends StatefulWidget {
+  @override
+  State<BarChartContent> createState() => _BarChartContentState();
+}
+
+class _BarChartContentState extends State<BarChartContent> {
   @override
   Widget build(BuildContext context) {
     return BarChart(BarChartData(

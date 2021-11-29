@@ -15,32 +15,28 @@ class ChartContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.475,
-        height: MediaQuery.of(context).size.width * 0.475 * 0.65,
-        padding: EdgeInsets.fromLTRB(0, 10, 20, 10),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              title,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-                child: Container(
-              padding: EdgeInsets.only(top: 10),
-              child: chart,
-            ))
-          ],
-        ),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      height: MediaQuery.of(context).size.width * 0.4 * 0.65,
+      padding: EdgeInsets.fromLTRB(0, 10, 20, 10),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+              child: Container(
+            padding: EdgeInsets.only(top: 10),
+            child: chart,
+          ))
+        ],
       ),
     );
   }
