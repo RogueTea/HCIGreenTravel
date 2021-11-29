@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/chart_container.dart';
 import 'chart/bar_chart.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 // Setup all the blank pages outlined in the figma wireframes.
 // Added basic button routing to map out the navigation of the app.
@@ -14,7 +16,7 @@ void main() {
       '/register': (context) => RegisterPage(),
       '/edit-profile': (context) => EditProfilePage(),
       '/register-success': (context) => RegisterSuccessPage(),
-      '/home': (context) => HomePage(),
+      '/home': (context) => HomePage(token: '', email: '', password: ''),
       '/new-journey': (context) => NewJourneyPage(),
       '/new-journey/confirm': (context) => NewJourneyConfirmPage(),
       '/new-journey/save': (context) => NewJourneySavePage(),
@@ -29,18 +31,20 @@ void main() {
 
 class TextBoxInput extends StatelessWidget {
   final String _title;
-  //final Object _controller;
-  TextBoxInput(this._title);
+  final TextEditingController _controller;
+  TextBoxInput(this._title, this._controller);
 
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.fromLTRB(15.0, 0.0, 10.0, 0.0),
+        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
         decoration: BoxDecoration(
           color: Color(0xffE3E3E3),
           borderRadius: BorderRadius.circular(30),
         ),
         child: TextField(
+            controller: _controller,
             autofocus: true,
             obscureText: false,
             style: TextStyle(
@@ -61,7 +65,52 @@ class TextBoxInput extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  String token = "";
+  String email = "";
+  String password = "";
+
+  Future<http.Response> login(email, password) async {
+    var url = Uri.parse('http://10.0.2.2:8000/login');
+    var tes = jsonEncode({
+      "email": email,
+      "password": password,
+    });
+    final http.Response response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Charset': 'utf-8'
+        },
+        body: tes);
+    print(tes);
+
+    if (response.statusCode != null) {
+      token = jsonDecode(response.body)["token"];
+      email = jsonDecode(response.body)["email"];
+      password = jsonDecode(response.body)["password"];
+      if (token != null) {
+        print(token);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  HomePage(token: token, email: email, password: password)),
+        );
+      } else
+        print(jsonDecode(response.body));
+      return response;
+    }
+    return response;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,8 +170,8 @@ class LoginPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: <Widget>[
-                    TextBoxInput("username"),
-                    TextBoxInput("password"),
+                    TextBoxInput("email", emailController),
+                    TextBoxInput("password", passwordController),
                     Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: ElevatedButton(
@@ -139,6 +188,7 @@ class LoginPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             )),
                         onPressed: () {
+                          login(emailController.text, passwordController.text);
                           Navigator.pushNamed(context, '/home');
                         },
                       ),
@@ -150,7 +200,39 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future<http.Response> register(username, password, email) async {
+    var url = Uri.parse('http://10.0.2.2:8000/addUser/');
+    var tes = jsonEncode({
+      "username": username,
+      "email": email,
+      "password": password,
+    });
+    final http.Response response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Charset': 'utf-8'
+        },
+        body: tes);
+    print(tes);
+
+    if (response.statusCode != null) {
+      //print(jsonDecode(response.body));
+      print(response.body);
+      return response;
+    }
+    return response;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,9 +292,9 @@ class RegisterPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: <Widget>[
-                    TextBoxInput("username"),
-                    TextBoxInput("email"),
-                    TextBoxInput("password"),
+                    TextBoxInput("username", usernameController),
+                    TextBoxInput("password", passwordController),
+                    TextBoxInput("email", emailController),
                     Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child: ElevatedButton(
@@ -229,6 +311,8 @@ class RegisterPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             )),
                         onPressed: () {
+                          register(usernameController.text,
+                              passwordController.text, emailController.text);
                           Navigator.pushNamed(context, '/register-success');
                         },
                       ),
@@ -377,11 +461,23 @@ class JourneyDisplay extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  String email, password, token;
+  HomePage({required this.email, required this.password, required this.token});
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double tab_width = width / 3;
+    String email = widget.email;
+    String token = widget.token;
+    String password = widget.password;
+    print(token);
+    //print(token);
     return Scaffold(
       backgroundColor: Color(0xffDDDFDE),
       bottomNavigationBar: BottomAppBar(
@@ -535,7 +631,7 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text("Total CO2 Emission",
+                          Text("Total CO2 Emittion",
                               style: TextStyle(
                                 color: Color(0xff232122),
                                 fontSize: 14,
@@ -1513,21 +1609,6 @@ class WeeklyReportPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      TextBoxInput("username"),
-                      TextBoxInput("email"),
-                      TextBoxInput("password"),
-                      TextBoxInput("username"),
-                      TextBoxInput("email"),
-                      TextBoxInput("password"),
-                      TextBoxInput("username"),
-                      TextBoxInput("email"),
-                      TextBoxInput("password"),
-                      TextBoxInput("username"),
-                      TextBoxInput("email"),
-                      TextBoxInput("password"),
-                      TextBoxInput("username"),
-                      TextBoxInput("email"),
-                      TextBoxInput("password"),
                     ],
                   ))
             ],
@@ -1539,6 +1620,10 @@ class WeeklyReportPage extends StatelessWidget {
 }
 
 class EditProfilePage extends StatelessWidget {
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1575,9 +1660,9 @@ class EditProfilePage extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    TextBoxInput("username"),
-                    TextBoxInput("email"),
-                    TextBoxInput("password"),
+                    TextBoxInput("username", usernameController),
+                    TextBoxInput("email", emailController),
+                    TextBoxInput("password", passwordController),
                     SizedBox(
                       height: 20,
                     ),
@@ -1806,3 +1891,4 @@ class _LearnPageState extends State<LearnPage> {
         ));
   }
 }
+
