@@ -1594,7 +1594,7 @@ class WeeklyPageState extends State<WeeklyReportPage> {
                               color: Color(0xff232122),
                               fontWeight: FontWeight.bold)),
                       SizedBox(height: 10),
-                      Text("2/11~9/11", style: TextStyle(fontSize: 14)),
+                      Text("29/11~5/12", style: TextStyle(fontSize: 14)),
                       SizedBox(height: 10),
                       Container(
                           alignment: Alignment.center,
