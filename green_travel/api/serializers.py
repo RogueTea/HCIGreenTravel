@@ -32,6 +32,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
     password = serializers.CharField()
     token = serializers.CharField(required=False, read_only=True)
+    username = serializers.CharField(required=False, read_only=True)
 
 
 
@@ -50,18 +51,20 @@ class UserLoginSerializer(serializers.ModelSerializer):
             raise ValidationError("User credentials are not correct.")
         user = User.objects.get(email=email)
 
-        #User has sucessfully logged in
+        #User is already logged in
         if user.logged:
             raise ValidationError("User logged in.")
         user.logged = True 
         data['token'] = uuid4() # set unique token 
         user.token = data['token']
         user.save()
+        data['username'] = user.username 
         return data
 
     class Meta:
         model = User
         fields = (
+                        'username',
             'email',
             'password',
             'token',
@@ -70,6 +73,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
         read_only_fields = (
             'token',
+            'username',
         )
 
 
@@ -106,7 +110,7 @@ class UserLogoutSerializer(serializers.ModelSerializer):
 class JourneySerializer(serializers.ModelSerializer):
     class Meta:
         model = Journey
-        fields = ('distance','transport', 'emitted', 'user_id')
+        fields = ('distance','transport', 'emitted', 'user_id','date')
 
 
 class TransportName(PrimaryKeyRelatedField): 
