@@ -29,15 +29,7 @@ class Journey(models.Model):
     emitted = models.IntegerField(default =0, null=True)
     transport = models.ForeignKey(Default,on_delete=models.CASCADE, default = "Car (Petrol)")
     user_id = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    date = models.DateField(default = date.today, null = True)
+    date = models.DateField(default=date.today, null=True)
     def __str__(self):
         return str(self.journey_id)
-
-
-"""
-class Scoreboard(models.Model):
-    journeyid = models.ForeignKey(Journey, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-"""
-
 

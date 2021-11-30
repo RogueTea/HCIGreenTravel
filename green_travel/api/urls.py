@@ -16,6 +16,7 @@ urlpatterns = [
     path('logout', Logout.as_view(), name="logout"),
     path('learn/', co2Learn.as_view(), name='learn'),
     path('<int:user_id>/journeys/', JourneyListUser.as_view(), name="JourneyListUser"),
-
+    path('weeklyReport/', weeklyReport.as_view(), name='weeklyReport'),
+    path('scoreboard/', scoreboard.as_view(), name='scoreboard'),
   ]
 
