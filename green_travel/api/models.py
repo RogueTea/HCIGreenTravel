@@ -32,16 +32,3 @@ class Journey(models.Model):
     date = models.DateField(default=date.today, null=True)
     def __str__(self):
         return str(self.journey_id)
-
-"""
-class Scoreboard(models.Model):
-    journey_id = models.ForeignKey(Journey, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    distance = models.IntegerField(default =0)
-    emitted = models.IntegerField(default =0, null=True)
-
-    def __str__(self):
-        return str(self.journey_id)
-"""
-
-
