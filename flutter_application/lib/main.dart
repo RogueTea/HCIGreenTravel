@@ -1656,6 +1656,13 @@ class WeeklyPageState extends State<WeeklyReportPage> {
                                   );
                                 }).toList(),
                               ),
+                              RotatedBox(
+                                  quarterTurns: 3,
+                                  child: new Text("CO2 emission (g)",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color(0xff232122),
+                                          fontWeight: FontWeight.bold))),
                               ChartContainer(
                                 title: 'default mode of transport',
                                 color: Color(0xffD5D6D6),

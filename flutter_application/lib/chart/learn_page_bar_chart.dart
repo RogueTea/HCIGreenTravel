@@ -22,16 +22,14 @@ class _LearnPageBarChartContentState extends State<LearnPageBarChartContent> {
             getTitles: (value) {
               switch (value.toInt()) {
                 case 1:
-                  return 'Walk';
-                case 2:
                   return 'Train';
-                case 3:
+                case 2:
                   return 'Car (electric)';
-                case 4:
+                case 3:
                   return 'Bus';
-                case 5:
+                case 4:
                   return 'Car (petrol)';
-                case 6:
+                case 5:
                   return 'Car (diesel)';
               }
               return '';
