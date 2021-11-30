@@ -1,14 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter_application/chart_data/bar_chart_data.dart';
+import 'package:flutter_application/chart_data/weekly_bar_chart_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class BarChartContent extends StatefulWidget {
+class WeeklyBarChartContent extends StatefulWidget {
   @override
-  State<BarChartContent> createState() => _BarChartContentState();
+  State<WeeklyBarChartContent> createState() => _WeeklyBarChartContentState();
 }
 
-class _BarChartContentState extends State<BarChartContent> {
+class _WeeklyBarChartContentState extends State<WeeklyBarChartContent> {
   @override
   Widget build(BuildContext context) {
     return BarChart(BarChartData(
@@ -18,19 +18,15 @@ class _BarChartContentState extends State<BarChartContent> {
             getTitles: (value) {
               switch (value.toInt()) {
                 case 1:
-                  return 'Walk';
+                  return 'Car (petrol)';
                 case 2:
-                  return 'Cycle';
-                case 3:
-                  return 'Car';
-                case 4:
                   return 'Bus';
               }
               return '';
             },
           ),
           leftTitles: SideTitles(
-            interval: 100,
+            interval: ((30 + 0.5) * 192) / 5,
             reservedSize: 50,
             showTitles: true,
             getTitles: (value) {
@@ -54,8 +50,8 @@ class _BarChartContentState extends State<BarChartContent> {
       borderData:
           FlBorderData(border: Border.all(color: Colors.black, width: 0.5)),
       alignment: BarChartAlignment.spaceEvenly,
-      maxY: 400,
-      barGroups: barChartGroupData,
+      maxY: (30 + 2) * 192,
+      barGroups: weeklyBarChartGroupData,
     ));
   }
 }

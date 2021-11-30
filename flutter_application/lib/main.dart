@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/chart_container.dart';
-import 'chart/bar_chart.dart';
+import 'chart/weekly_bar_chart.dart';
+import 'chart/learn_page_bar_chart.dart';
+import 'chart/home_page_line_chart.dart';
+import 'chart/weekly_transport_pie_chart.dart';
+import 'chart/weekly_co2_pie_chart.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -77,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
   String password = "";
 
   Future<http.Response> login(email, password) async {
-    var url = Uri.parse('http://10.0.2.2:8000/login');
+    var url = Uri.parse('http://127.0.0.1:8000/login');
     var tes = jsonEncode({
       "email": email,
       "password": password,
@@ -209,7 +213,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
 
   Future<http.Response> register(username, password, email) async {
-    var url = Uri.parse('http://10.0.2.2:8000/addUser/');
+    var url = Uri.parse('http://127.0.0.1:8000/addUser/');
     var tes = jsonEncode({
       "username": username,
       "email": email,
@@ -250,7 +254,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: TextButton(
-                      child: Text("Log In",
+                      child: Text("Login",
                           style: TextStyle(
                             color: Color(0xff232122),
                             fontSize: 20,
@@ -459,6 +463,7 @@ class JourneyDisplay extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   String email, password, token;
   HomePage({required this.email, required this.password, required this.token});
@@ -620,7 +625,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
-                      margin: EdgeInsets.fromLTRB(30, 20, 10, 0),
+                      margin: EdgeInsets.fromLTRB(550, 20, 10, 0),
                       padding: EdgeInsets.fromLTRB(10.0, 10, 10, 10),
                       height: 110,
                       decoration: BoxDecoration(
@@ -629,7 +634,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Column(
                         children: [
-                          Text("Total CO2 Emittion",
+                          Text("Total CO2 Emission",
                               style: TextStyle(
                                 color: Color(0xff232122),
                                 fontSize: 14,
@@ -647,13 +652,26 @@ class _HomePageState extends State<HomePage> {
                       )),
                   Container(
                       margin: EdgeInsets.fromLTRB(10, 20, 30, 0),
-                      //padding: EdgeInsets.fromLTRB(10.0, 0, 10, 0),
-                      height: 110,
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      height: 300,
                       decoration: BoxDecoration(
                         color: Color(0xffEDEDED),
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: Text("graph"))
+                      child: Row(children: [
+                        RotatedBox(
+                            quarterTurns: 3,
+                            child: new Text("CO2 emission (g)",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xff232122),
+                                    fontWeight: FontWeight.bold))),
+                        ChartContainer(
+                            title: 'CO2 saved each week',
+                            color: Color(0xffE5E5E5),
+                            chart: homePageLineChartContent(),
+                            size: 0.3)
+                      ]))
                 ],
               )
             ],
@@ -804,9 +822,11 @@ class _NewJourneyPageState extends State<NewJourneyPage> {
                         },
                         items: <String>[
                           'Walk',
-                          'Cycle',
-                          'Car',
+                          'Train',
+                          'Car (electric)',
                           'Bus',
+                          'Car (petrol)',
+                          'Car (diesel)'
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -1162,9 +1182,11 @@ class _EditJourneyPageState extends State<EditJourneyPage> {
                         },
                         items: <String>[
                           'Walk',
-                          'Cycle',
-                          'Car',
+                          'Train',
+                          'Car (electric)',
                           'Bus',
+                          'Car (petrol)',
+                          'Car (diesel)'
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -1525,7 +1547,15 @@ class ScoreboardPage extends StatelessWidget {
   }
 }
 
-class WeeklyReportPage extends StatelessWidget {
+class WeeklyReportPage extends StatefulWidget {
+  const WeeklyReportPage({Key? key}) : super(key: key);
+
+  @override
+  State<WeeklyReportPage> createState() => WeeklyPageState();
+}
+
+class WeeklyPageState extends State<WeeklyReportPage> {
+  String transport = 'Car (petrol)';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1569,44 +1599,72 @@ class WeeklyReportPage extends StatelessWidget {
                       Container(
                           alignment: Alignment.center,
                           width: MediaQuery.of(context).size.width * 0.7,
+                          margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
                           padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(15),
+                          )),
+                      SizedBox(height: 20),
+                      ChartContainer(
+                        title: 'Distance travelled by each transport',
+                        color: Color(0xffD5D6D6),
+                        chart: WeeklyTransportPieChartContent(),
+                        size: 0.2,
+                      ),
+                      Text('\n'),
+                      ChartContainer(
+                        title: 'CO2 emitted by each transport',
+                        color: Color(0xffD5D6D6),
+                        chart: WeeklyCO2PieChartContent(),
+                        size: 0.2,
+                      ),
+                      Text('\n'),
+                      Container(
                           decoration: BoxDecoration(
                             color: Color(0xffD5D6D6),
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          child: Text(
-                            "1. Summary of how you did\n2. Comparison with others\n3. How you can get better",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xff5E575A),
-                                fontWeight: FontWeight.bold,
-                                height: 1.5),
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          margin: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              DropdownButton<String>(
+                                value: transport,
+                                icon: const Icon(Icons.arrow_downward),
+                                iconSize: 24,
+                                underline: Container(),
+                                style:
+                                    const TextStyle(color: Color(0xff232122)),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    transport = newValue!;
+                                  });
+                                },
+                                items: <String>[
+                                  'Walk',
+                                  'Train',
+                                  'Car (electric)',
+                                  'Bus',
+                                  'Car (petrol)',
+                                  'Car (diesel)'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                              ChartContainer(
+                                title: 'default mode of transport',
+                                color: Color(0xffD5D6D6),
+                                chart: WeeklyBarChartContent(),
+                                size: 0.2,
+                              )
+                            ],
                           )),
-                      SizedBox(height: 20),
-                      Text(
-                        "Summary of how you did",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xff232122),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "Comparison with others",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xff232122),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "How you can get better",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xff232122),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Text('\n'),
                     ],
                   ))
             ],
@@ -1697,8 +1755,8 @@ class LearnPage extends StatefulWidget {
 }
 
 class LearnPageState extends State<LearnPage> {
-  String transport = 'Car';
-  static var distanceInput = TextEditingController(text: "0");
+  String transport = 'Car (petrol)';
+  static var distanceInput = TextEditingController(text: "5.7");
 
   @override
   Widget build(BuildContext context) {
@@ -1804,13 +1862,15 @@ class LearnPageState extends State<LearnPage> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: TextFormField(
-                                    controller: distanceInput,
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none),
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ])),
+                                  controller: distanceInput,
+                                  decoration:
+                                      InputDecoration(border: InputBorder.none),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[0-9.,]+')),
+                                  ],
+                                )),
                             Container(
                               margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -1839,9 +1899,11 @@ class LearnPageState extends State<LearnPage> {
                                 },
                                 items: <String>[
                                   'Walk',
-                                  'Cycle',
-                                  'Car',
+                                  'Train',
+                                  'Car (electric)',
                                   'Bus',
+                                  'Car (petrol)',
+                                  'Car (diesel)'
                                 ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
@@ -1891,9 +1953,10 @@ class LearnPageState extends State<LearnPage> {
                               color: Color(0xff232122),
                               fontWeight: FontWeight.bold))),
                   ChartContainer(
-                      title: 'Bar Chart',
+                      title: '',
                       color: Color(0xffE5E5E5),
-                      chart: BarChartContent())
+                      chart: LearnPageBarChartContent(),
+                      size: 0.4)
                 ]))
           ],
         ));
@@ -1903,4 +1966,3 @@ class LearnPageState extends State<LearnPage> {
     setState(() {});
   }
 }
-

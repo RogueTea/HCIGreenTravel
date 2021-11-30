@@ -5,20 +5,22 @@ class ChartContainer extends StatelessWidget {
   final Color color;
   final String title;
   final Widget chart;
+  final double size;
 
-  const ChartContainer({
-    Key? key,
-    required this.title,
-    required this.color,
-    required this.chart,
-  }) : super(key: key);
+  const ChartContainer(
+      {Key? key,
+      required this.title,
+      required this.color,
+      required this.chart,
+      required this.size})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
-      height: MediaQuery.of(context).size.width * 0.4 * 0.65,
-      padding: EdgeInsets.fromLTRB(0, 10, 20, 10),
+      width: MediaQuery.of(context).size.width * size,
+      height: MediaQuery.of(context).size.width * size * 0.65,
+      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(20),
