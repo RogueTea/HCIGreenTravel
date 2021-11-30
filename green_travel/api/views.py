@@ -9,7 +9,8 @@ from rest_framework import status
 from api.models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from django.db.models import Sum
+from datetime import date, timedelta
 
 # POST/GET request
 #View all users registered and register new user
@@ -63,6 +64,8 @@ def apiOverview(request):
         'Logout' : '/logout',
         'List journeys by user' :  '<int:user_id>/journeys/',
         'Learn' : 'learn/',
+        'Scoreboard' : 'scoreboard/',
+        'Weekly Report' : 'weeklyReport/'
 
     }
     return Response(api_urls)
@@ -167,29 +170,46 @@ class co2Learn(APIView):
                 data["average"] = average
                 return Response(data)
             except:
-                return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)       
+                return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)      
 
-"""
-class addJourney(APIView):
-    def post(self,request):
-        data = {}
-        serializer = JourneySerializer(data=request.data)
-        if serializer.is_valid(raise_exception = ValueError):
-            try:
-                transport = serializer.data["transport"]
-                Tobject = Default.objects.get(pk=transport)
-                emissions = Tobject.emissions
-                distance = request.data["distance"]
 
-                # adding journey to DB
-                journey = Journey.objects.create(
-                    transport = Tobject,
-                    distance = distance,
-                    emitted = distance * emissions
-                )
+class scoreboard(APIView):
+    # get the users and each user's total amount of emissions
+    def get(self,request):
+        data ={}
 
-                data['journey'] = Journey.objects.filter(journeyid=journey.journeyid).values()[0]
-                return Response(data)
-            except:
-                return Response({"error": True,"error_msg": serializer.error_messages},status=status.HTTP_400_BAD_REQUEST)       
-"""
+        sort={}
+        journeys = Journey.objects.values('user_id').distinct()
+        
+        for u in journeys:  
+            user = User.objects.get(id=u['user_id']) 
+            emit = Journey.objects.filter(user_id=u['user_id']).aggregate(Sum('emitted'))
+            data[user.username] = emit
+        for d in sorted(data.items(), key=lambda x: x[1]['emitted__sum']):
+            sort[d[0]]= d[1]
+
+        return Response(sort)
+
+
+class weeklyReport(APIView):
+    # get the journey information for a user in the current week
+    def get(self, request):
+        data ={}
+        today = date.today()
+        week_dates = []
+        
+        for d in range(7):
+            # list of dates in the current week
+            week_dates.append(today + timedelta(days=d))
+
+        # get the queryset of journey dates and convert to a list
+        days = list(Journey.objects.values('date'))
+        
+        
+        listOfDays = [d['date'] for d in days]
+        for i in listOfDays:
+            if i in week_dates:
+                reports = Journey.objects.filter(user_id=User.objects.get(pk=1))
+                serializer = ReportSerializer(reports, many=True)
+                data['serializer'] = serializer.data
+            return Response(data)

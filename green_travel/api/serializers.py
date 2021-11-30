@@ -129,4 +129,7 @@ class EmissionSerializer(ModelSerializer):
         model = Default
         fields = '__all__'
 
-
+class ReportSerializer(ModelSerializer):
+    class Meta:
+        model = Journey
+        fields = ('user_id','distance', 'transport', 'emitted')
